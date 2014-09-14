@@ -1,5 +1,5 @@
 {
-	"name" : "WPPluginFramework",
+	"name" : "xptrdev/WPPluginFramework",
   "type": "library",
   "description": "Wordpress Plugin Framework",
   "homepage": "http://www.xptrdev.com/frameworks/wordpress/plugins",
