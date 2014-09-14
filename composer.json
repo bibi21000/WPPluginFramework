@@ -9,5 +9,6 @@
           "name": "Ahmed Said",
           "email": "asaid@xptrdev.com"
       }
-  ]
+  ],
+  "autoload" : {"classmap" : ["Include/"]}
 }
