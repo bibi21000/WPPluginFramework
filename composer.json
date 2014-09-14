@@ -1,0 +1,13 @@
+{
+	"name" : "WPPluginFramework",
+  "type": "library",
+  "description": "Wordpress Plugin Framework",
+  "homepage": "http://www.xptrdev.com/frameworks/wordpress/plugins",
+  "license": "LGPL",
+  "authors": [
+      {
+          "name": "Ahmed Said",
+          "email": "asaid@xptrdev.com"
+      }
+  ]
+}
