@@ -3,16 +3,15 @@
 * 
 */
 
-namespace WPPFW\MVC;
+namespace WPPFW\MVC\Controller;
 
 /**
 * 
 */
-interface IDispatcher {
+interface IController {
 	
 	/**
 	* 
 	*/
 	public function & dispatch();
-	
 }

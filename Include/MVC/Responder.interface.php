@@ -8,11 +8,11 @@ namespace WPPFW\MVC;
 /**
 * 
 */
-interface IDispatcher {
+interface IMVCResponder {
 	
 	/**
 	* 
 	*/
-	public function & dispatch();
-	
+	public function __toString();
+
 }

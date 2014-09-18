@@ -8,11 +8,11 @@ namespace WPPFW\MVC;
 /**
 * 
 */
-interface IDispatcher {
+interface IMVCViewRouter {
 	
 	/**
 	* 
 	*/
-	public function & dispatch();
+	public function getView();
 	
 }

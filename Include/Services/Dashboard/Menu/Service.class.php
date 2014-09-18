@@ -26,6 +26,13 @@ class Service implements Services\IService {
 	* @var mixed
 	*/
 	protected $menuPages;
+
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $responder;
 	
 	/**
 	* put your comment there...
@@ -33,6 +40,13 @@ class Service implements Services\IService {
 	* @var Services\IServiceFrontFactory
 	*/
 	protected $serviceFront;
+
+	/**
+	* put your comment there...
+	* 
+	* @var Services\IServiceFrontFactory
+	*/
+	protected $serviceFrontFactory;
 	
 	/**
 	* put your comment there...
@@ -41,9 +55,9 @@ class Service implements Services\IService {
 	* @param mixed $menuPages
 	* @return Service
 	*/
-	public function __construct(Services\IServiceFrontFactory & $serviceFront, $menuPages) {
+	public function __construct(Services\IServiceFrontFactory & $serviceFrontFactory, $menuPages) {
 		# Initialize
-		$this->serviceFront =& $serviceFront;
+		$this->serviceFrontFactory =& $serviceFrontFactory;
 		$this->menuPages =& $menuPages;
 	}
 
@@ -73,7 +87,7 @@ class Service implements Services\IService {
 	* 
 	*/
 	public function _wp_menuCallback() {
-		echo $this->getServiceFront()->getResponse();
+		echo $this->responder;
 	}
   
   /**
@@ -83,9 +97,11 @@ class Service implements Services\IService {
   public function _wp_pageLoad() {
   	# Initialize
   	$loadActionName = current_filter();
-  	$serviceFront =& $this->getServiceFront();
+  	$serviceFrontFactory =& $this->getServiceFrontFactory();
 		# Load service front + exchange service front with the returned one
-		$this->serviceFront = $serviceFront->load($this->hoohMap[$loadActionName]);
+		$this->serviceFront =& $serviceFrontFactory->createServiceFront($this->hoohMap[$loadActionName]);
+		# Dispatch
+		$this->responder =& $serviceFrontFactory->dispatch($this->serviceFront);
   }
 
 	/**
@@ -100,8 +116,24 @@ class Service implements Services\IService {
 	* put your comment there...
 	* 
 	*/
+	public function & getResponder() {
+		return $this->responder;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & getServiceFront() {
 		return $this->serviceFront;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getServiceFrontFactory() {
+		return $this->serviceFrontFactory;
 	}
 
 	/**
