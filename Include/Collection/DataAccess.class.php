@@ -15,7 +15,7 @@ class DataAccess implements IDataAccess {
 	* 
 	* @var mixed
 	*/
-	protected $data;
+	protected $data = array();
 	
 	/**
 	* put your comment there...
@@ -23,9 +23,11 @@ class DataAccess implements IDataAccess {
 	* @param mixed $data
 	* @return DataAccess
 	*/
-	public function __construct(& $data) {
+	public function __construct(& $data = null) {
 		# Initialize
-		$this->data =& $data;
+		if ($data !== null) {
+			$this->data =& $data;	
+		}
 	}
   
 	/**

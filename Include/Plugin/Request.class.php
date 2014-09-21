@@ -38,7 +38,7 @@ class Request extends HTTPRequest {
 		# INitialize parent
 		parent::__construct($get, $post, $request);
 		# Define Wordpress input channel.
-		$this->addChannel(self::WORDPRESS_CHANNEL_NAME, new Collection\DataAccess(array()));
+		$this->addChannel(self::WORDPRESS_CHANNEL_NAME, new Collection\DataAccess());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ class Request extends HTTPRequest {
 	* @param mixed $name
 	* @param IDataAccess $object
 	*/
-	public function addChannel($name, Collection\IDataAccess $channel) {
+	public function & addChannel($name, Collection\IDataAccess $channel) {
 		# Add if not alreasdy added
 		if (!isset($this->channels[$name])) {
 			$this->channels[$name] =& $channel;

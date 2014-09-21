@@ -12,28 +12,16 @@ use WPPFW\HDT\XML\XMLWriterPrototype;
 * 
 */
 class ObjectsPrototype extends XMLWriterPrototype {
-	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $result = array();
 
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & processIn() {
-		
-	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & processOut() {
-		
+	public function getObject() {
+		# Impersonate Objects as Object so that 
+		# First level child object wouldn't fail while
+		# it tried to inherits parent properties!
+		$this->result = $this->getReaderPrototype()->getObjectArrayModel();
 	}
 
 }

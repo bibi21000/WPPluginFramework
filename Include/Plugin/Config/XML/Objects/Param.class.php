@@ -17,7 +17,7 @@ class ObjectParamPrototype extends XMLWriterPrototype {
 	* put your comment there...
 	* 
 	*/
-	public function & processIn() {
+	public function getObject() {
 		# Initialize
 		$node =& $this->getDataSource();
 		$result =& $this->getResult();
@@ -26,15 +26,8 @@ class ObjectParamPrototype extends XMLWriterPrototype {
 		$objectResult =& $object->getResult();
 		# Get attributes as array
 		$attributes = $reader->getAttributesArray();
-		$result = array($attributes['name'] => $attributes['value']);
 		# Push to parent object
-		$objectResult = array_merge($objectResult['params'], $this->result);
+		$objectResult['params'][$attributes['name']] = $attributes['value'];
 	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & processOut() {}
 
 }

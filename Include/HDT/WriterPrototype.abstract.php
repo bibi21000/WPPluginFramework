@@ -11,6 +11,16 @@ namespace WPPFW\HDT;
 abstract class WriterPrototype implements IWriterPrototype {
 	
 	/**
+	* 
+	*/
+	const TRASNFORM_LAYER_IN = '';
+
+	/**
+	* 
+	*/
+	const TRASNFORM_LAYER_OUT = 'Out';
+	
+	/**
 	* put your comment there...
 	* 
 	* @var mixed
@@ -68,8 +78,6 @@ abstract class WriterPrototype implements IWriterPrototype {
 	public function __construct(IReaderPrototype & $readerPrototype = null) {
 		# INitialize reader prototype
 		$this->readerPrototype =& $readerPrototype;
-		# Model initialization
-		$this->initializeModel();
 	}
 
 	/**
@@ -144,6 +152,18 @@ abstract class WriterPrototype implements IWriterPrototype {
 		}
 		# Returns
 		return $this->prototypes[$name];
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $name
+	*/
+	public function & getPrototypeInstance($name) {
+		# getting all instances
+		$instances =& $this->getPrototypeInstances($name);
+		# Get only one.
+		return $instances[0];
 	}
 
 	/**
@@ -229,6 +249,8 @@ abstract class WriterPrototype implements IWriterPrototype {
 				$this->instances[$prototypeName][] = $prototypeInstance;
 			}
 		}
+		# chain
+		return $this;
 	}
 
 	/**
@@ -245,33 +267,6 @@ abstract class WriterPrototype implements IWriterPrototype {
 		# Load
 		return $this->load($document, $parent);
 	}
-		
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & process() {
-		# Process In
-		$this->processIn();
-		# Process Plugged prototype
-		$this->processPrototypes();
-		# Process Out
-		$this->processOut();
-		# chain
-		return $this;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function processIn(& $pipe) {;}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function processOut(& $pipe) {;}
 	
 	/**
 	* put your comment there...
@@ -279,16 +274,18 @@ abstract class WriterPrototype implements IWriterPrototype {
 	* @param mixed $layerName
 	* @param mixed $pipe
 	*/
-	protected function & processPrototypes($layerName, & $pipe) {
+	protected function & processPrototypes($layerName, & $pipe = null) {
 		# Initialize
 		$instances =& $this->getInstances();
 		# Get all prototypes instances
 		foreach ($instances as $prototypeName => $PrototypeInstances) {
 			foreach ($PrototypeInstances as $instance) {
 				# Process instance
-				$instance->scan($layerName, $pipe);
+				$instance->transform($layerName, $pipe);
 			}
 		}
+		# Chain
+		return $this;
 	}
 
 	/**
@@ -326,6 +323,43 @@ abstract class WriterPrototype implements IWriterPrototype {
 	public function & setReaderPrototype(IReaderPrototype $readerPrototype) {
 		# Set
 		$this->readerPrototype =& $readerPrototype;
+		# Chain
+		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $layerName
+	* @param mixed $pipe
+	* @return WriterPrototype
+	*/
+	public function & transform($layerName, & $pipe = null) {
+		# Process In
+		$this->transformLayer(self::TRASNFORM_LAYER_IN, $layerName, $pipe);
+		# Process Plugged prototype
+		$this->processPrototypes($layerName, $pipe);
+		# Process Out
+		$this->transformLayer(self::TRASNFORM_LAYER_OUT, $layerName, $pipe);
+		# chain
+		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $direction
+	* @param mixed $layerName
+	* @param mixed $pipe
+	*/
+	public function & transformLayer($direction, $layerName, & $pipe = null) {
+		# Layer method name
+		$layerMethodName = "{$layerName}{$direction}";
+		# Check existance
+		if (method_exists($this, $layerMethodName)) {
+			# Call layer
+			$this->$layerMethodName($pipe);			
+		}
 		# Chain
 		return $this;
 	}

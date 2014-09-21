@@ -11,4 +11,4 @@ use WPPFW\HDT\XML\XMLWriterPrototype;
 /**
 * 
 */
-class PluginPrototype extends XMLWriterPrototype {}
+abstract class PluginWriterPrototype extends XMLWriterPrototype {}

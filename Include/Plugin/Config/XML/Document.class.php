@@ -12,36 +12,44 @@ use WPPFW\HDT;
 * 
 */
 class PluginConfigDocument extends HDT\HDTDocument {
-
+	
 	/**
 	* put your comment there...
 	* 
 	*/
-	protected function definePrototypes() {
+	protected function & definePrototypes() {
 		# Plugin
-		$plugin = new PluginPrototype('plugin');
-		# Objects
+		$plugin = new PluginPrototype('config:plugin');
+		
+		# Object and Child Objects
 		$object = new ObjectPrototype('config:object');
 		$object->addPrototype('param', new ObjectParamPrototype('config:param'));
+		
+		# MVC Config section, it retuned MVCPrototype(), dont get confused!
+		$plugin->addPrototype('mvc', new MVCPrototype('config:mvc'))
+	
 		# Child objects
-		$plugin->addPrototype('objects', new ObjectsPrototype('config:objects'))
+						->addPrototype('objects', new ObjectsPrototype('config:objects'))
 						->addPrototype('object', $object)
 						->addPrototype('object/child', $object);
-						
-		# SimpleXML Document File
-		$xmldoc = new \SimpleXMLElement(file_get_contents('c:\temp\xml-prototype-test.xml'));
 		
 		# SimpleXML Reader prototype 
-		$readerPrototype = new HDT\XML\SimpleXMLReaderPrototype();
+		$readerPrototype = new PluginSimpleXMLReaderPrototype();
 		$readerPrototype->addNamespace('config', 'http://www.xptdev.com/frameworks/wordpress/plugin');
 		
 		# Set Reader prototype
 		$this->setDefaultReaderPrototype($readerPrototype);
 		
-		$plugin->loadWithData($this, $xmldoc);
-		
-		# Process
-		$plugin->process();
+		# Return root
+		return $plugin;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getMVC() {
+		return $this->getRootPrototype()->getPrototypeInstance('mvc');
 	}
 	
 }

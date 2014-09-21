@@ -6,53 +6,47 @@
 namespace WPPFW\Plugin\Config\XML;
 
 # Imports
-use WPPFW\HDT\XML\XMLWriterPrototype;;
+use WPPFW\HDT\XML\XMLWriterPrototype;
 
 /**
 * 
 */
 class ObjectPrototype extends XMLWriterPrototype {
-	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $result;
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	protected function initializeModel() {
-		# Define Result model
-		$this->result = array('params' => array());
-	}
 
 	/**
-	* Inherits parent class parameters
+	* put your comment there...
 	* 
 	*/
-	public function & processIn() {
+	public function getObject() {
+		# Object result structure.
+		$this->result = $this->getReaderPrototype()->getObjectArrayModel();
 		# Parent params
 		$parent =& $this->getParent();
-		$parentParams = $parent->getResult();
+		$reader =& $this->getReaderPrototype();
+		$parentParams =& $parent->getResult();
 		$result =& $this->getResult();
+		# Reading object attributes
+		$this->result = array_merge($this->result, $reader->getAttributesArray());
 		# Merge parent object
-		$result = array_merge($result['params'], $parentParams);
+		$result['params'] = array_merge($result['params'], $parentParams['params']);
 	}
 	
 	/**
 	* Collect object parameters
 	* 
 	*/
-	public function & processOut() {
-		$result =& $this->getResult(); 
-		$node =& $this->getDataSource();
-		# Extend
-		echo "Class = {$node->attributes()->class}<br>";
-		var_dump($result);
-		echo "----------------<br>";
+	public function getObjectOut(& $pipe = null) {
+		# Piping result
+		$pipe->addObject($this->getResult());
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $pipe
+	*/
+	public function resolveNamespaces(& $pipe = null) {
+		
 	}
 
 }

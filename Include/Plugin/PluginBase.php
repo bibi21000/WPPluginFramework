@@ -59,11 +59,13 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* @param mixed $config
 	* @return PluginBase
 	*/
-	protected function __construct($file, $config) {
+	protected function __construct($file, PluginConfig $config) {
 		# Initialize
 		$this->file =& $file;
 		$this->config =& $config;
-		$this->namespace = new PHPNamespace(reset(explode('\\', get_class($this))), dirname($file));
+		# getting namespace
+		$pluginClassComponents = explode('\\', get_class($this));
+		$this->namespace = new PHPNamespace(reset($pluginClassComponents), dirname($file));
 		$this->inputs = new Request($_GET, $_POST, $_REQUEST);
 		$this->url = plugin_dir_url($file);
 	}
@@ -101,6 +103,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
+	* @return PluginConfig
 	*/
 	public function & getConfig() {
 		return $this->config;

@@ -20,6 +20,13 @@ abstract class HDTDocument implements IHTDDocument {
 	/**
 	* put your comment there...
 	* 
+	* @var mixed
+	*/
+	protected $rootPrototype;
+	
+	/**
+	* put your comment there...
+	* 
 	* @param IReaderPrototype $readerPrototype
 	* @return {HDTDocument|IReaderPrototype}
 	*/
@@ -27,7 +34,7 @@ abstract class HDTDocument implements IHTDDocument {
 		# Initialize
 		$this->defaultReaderPrototype =& $readerPrototype;
 		# Define model prototype
-		$this->definePrototypes();
+		$this->rootPrototype =& $this->definePrototypes();
 	}
 	
 	/**
@@ -44,6 +51,14 @@ abstract class HDTDocument implements IHTDDocument {
 		return $this->defaultReaderPrototype;
 	}
 
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getRootPrototype() {
+		return $this->rootPrototype;
+	}
+	
 	/**
 	* put your comment there...
 	* 

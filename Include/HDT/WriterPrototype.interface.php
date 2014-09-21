@@ -29,7 +29,7 @@ interface IWriterPrototype {
 	/**
 	* 
 	*/
-	public function & scan($layerName, $pipe = null);
+	public function & transform($layerName, & $pipe = null);
 	
 	/**
 	* 
