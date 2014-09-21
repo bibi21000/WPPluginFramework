@@ -11,7 +11,7 @@ use WPPFW\HDT;
 /**
 * 
 */
-class SimpleXMLReaderPrototype implements HDT\IReaderPrototype {
+class SimpleXMLReaderPrototype extends HDT\ReaderPrototype {
 
 	/**
 	* put your comment there...
@@ -39,7 +39,10 @@ class SimpleXMLReaderPrototype implements HDT\IReaderPrototype {
 	* @param \SimpleXMLElement $node
 	* @return \SimpleXMLElement
 	*/
-	public function & getAttributesArray(\SimpleXMLElement & $node) {
+	public function & getAttributesArray() {
+		# Initialize
+		$writer =& $this->getWriter();
+		$node =& $writer->getDataSource();
 		# Cast to array
 		$attributesArray = (array) $node->attributes();
 		# Get array values

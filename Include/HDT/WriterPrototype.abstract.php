@@ -68,6 +68,8 @@ abstract class WriterPrototype implements IWriterPrototype {
 	public function __construct(IReaderPrototype & $readerPrototype = null) {
 		# INitialize reader prototype
 		$this->readerPrototype =& $readerPrototype;
+		# Model initialization
+		$this->initializeModel();
 	}
 
 	/**
@@ -172,6 +174,12 @@ abstract class WriterPrototype implements IWriterPrototype {
 	/**
 	* put your comment there...
 	* 
+	*/
+	protected function initializeModel() {;}
+	
+	/**
+	* put your comment there...
+	* 
 	* @param IHTDDocument $document
 	* @param {IHTDDocument|IWriterPrototype} $parent
 	* @return {IHTDDocument|IWriterPrototype}
@@ -193,7 +201,7 @@ abstract class WriterPrototype implements IWriterPrototype {
 													$prototype->getReaderPrototype() :
 													$document->getDefaultReaderPrototype();
 			# Read data. Create write prototype instances only if
-			# there is data available
+			# there is data available (STATIC call on tHE PROTOTYPE that should not BINDED as Instances below!!)
 			$dataList = $readerPrototype->query($prototypeName, $this, $prototype);
 			$dataList = !empty($dataList) ? $dataList : array();
 			# Create instance for every data record available
@@ -204,10 +212,17 @@ abstract class WriterPrototype implements IWriterPrototype {
 				* @var IWriterPrototype
 				*/
 				$prototypeInstance = clone $prototype;
-				# Set data
+				/**
+				* Create Reader prototype instance
+				* 
+				* @var IReaderPrototype
+				*/
+				$readerPrototypeInstance = clone $readerPrototype;
+				$readerPrototypeInstance->bind($this, $prototypeInstance);
+				# Set Writer Data source
 				$prototypeInstance->setDataSource($dataSource)
 				# Set readerprototype
-													->setReaderPrototype($readerPrototype)
+													->setReaderPrototype($readerPrototypeInstance)
 				# load prototype
 													->load($document, $this);
 				# Add to prototypes list.
@@ -250,26 +265,28 @@ abstract class WriterPrototype implements IWriterPrototype {
 	* put your comment there...
 	* 
 	*/
-	public abstract function processIn();
+	public function processIn(& $pipe) {;}
 	
 	/**
 	* put your comment there...
 	* 
 	*/
-	public abstract function processOut();
+	public function processOut(& $pipe) {;}
 	
 	/**
 	* put your comment there...
 	* 
+	* @param mixed $layerName
+	* @param mixed $pipe
 	*/
-	protected function & processPrototypes() {
+	protected function & processPrototypes($layerName, & $pipe) {
 		# Initialize
 		$instances =& $this->getInstances();
 		# Get all prototypes instances
 		foreach ($instances as $prototypeName => $PrototypeInstances) {
 			foreach ($PrototypeInstances as $instance) {
 				# Process instance
-				$instance->process();
+				$instance->scan($layerName, $pipe);
 			}
 		}
 	}
@@ -306,7 +323,7 @@ abstract class WriterPrototype implements IWriterPrototype {
 	* @param IReaderPrototype $readerPrototype
 	* @return {IReaderPrototype|WriterPrototype}
 	*/
-	public function & setReaderPrototype(IReaderPrototype & $readerPrototype) {
+	public function & setReaderPrototype(IReaderPrototype $readerPrototype) {
 		# Set
 		$this->readerPrototype =& $readerPrototype;
 		# Chain

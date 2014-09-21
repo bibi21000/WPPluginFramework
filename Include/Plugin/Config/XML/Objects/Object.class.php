@@ -18,8 +18,17 @@ class ObjectPrototype extends XMLWriterPrototype {
 	* 
 	* @var mixed
 	*/
-	protected $result = array();
+	protected $result;
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function initializeModel() {
+		# Define Result model
+		$this->result = array('params' => array());
+	}
+
 	/**
 	* Inherits parent class parameters
 	* 
@@ -30,7 +39,7 @@ class ObjectPrototype extends XMLWriterPrototype {
 		$parentParams = $parent->getResult();
 		$result =& $this->getResult();
 		# Merge parent object
-		$result = array_merge($result, $parentParams);
+		$result = array_merge($result['params'], $parentParams);
 	}
 	
 	/**

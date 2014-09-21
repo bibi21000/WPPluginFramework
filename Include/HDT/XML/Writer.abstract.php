@@ -28,10 +28,10 @@ abstract class XMLWriterPrototype extends HDT\WriterPrototype {
 	* @return {XMLWriterPrototype|IReaderPrototype}
 	*/
 	public function __construct($tagName, HDT\IReaderPrototype & $readerPrototype = null) {
-		# HDT Prototype writer
-		parent::__construct($readerPrototype);
 		# Initialize
 		$this->tagName = $tagName;
+		# HDT Prototype writer
+		parent::__construct($readerPrototype);
 	}
 	
 	/**

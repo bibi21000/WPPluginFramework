@@ -25,10 +25,10 @@ class ObjectParamPrototype extends XMLWriterPrototype {
 		$object =& $this->getParent();
 		$objectResult =& $object->getResult();
 		# Get attributes as array
-		$attributes = $reader->getAttributesArray($node);
+		$attributes = $reader->getAttributesArray();
 		$result = array($attributes['name'] => $attributes['value']);
 		# Push to parent object
-		$objectResult = array_merge($objectResult, $this->result);
+		$objectResult = array_merge($objectResult['params'], $this->result);
 	}
 	
 	/**

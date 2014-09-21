@@ -15,11 +15,6 @@ interface IWriterPrototype {
 	* 
 	*/
 	public function & load(IHTDDocument & $document, IWriterPrototype & $parent = null);
-		
-	/**
-	* 
-	*/
-	public function & process();
 	
 	/**
 	* 
@@ -34,11 +29,16 @@ interface IWriterPrototype {
 	/**
 	* 
 	*/
+	public function & scan($layerName, $pipe = null);
+	
+	/**
+	* 
+	*/
 	public function & setDataSource($data);
 	
 	/**
 	* 
 	*/
-	public function & setReaderPrototype(IReaderPrototype & $readerPrototype);
+	public function & setReaderPrototype(IReaderPrototype $readerPrototype);
 	
 }
