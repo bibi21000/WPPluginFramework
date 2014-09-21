@@ -6,78 +6,31 @@
 namespace WPPFW\Services\Dashboard\Menu;
 
 # Imports
-use WPPFW\Services;
+use WPPFW\Services\ServiceBase;
 
 /**
 * 
 */
-class Service implements Services\IService {
+class Service extends ServiceBase {
 	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $hoohMap = array();
-	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $menuPages;
-
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $responder;
-	
-	/**
-	* put your comment there...
-	* 
-	* @var Services\IServiceFrontFactory
-	*/
-	protected $serviceFront;
-
-	/**
-	* put your comment there...
-	* 
-	* @var Services\IServiceFrontFactory
-	*/
-	protected $serviceFrontFactory;
-	
-	/**
-	* put your comment there...
-	* 
-	* @param Services\IServiceFrontFactory $serviceFront
-	* @param mixed $menuPages
-	* @return Service
-	*/
-	public function __construct(Services\IServiceFrontFactory & $serviceFrontFactory, $menuPages) {
-		# Initialize
-		$this->serviceFrontFactory =& $serviceFrontFactory;
-		$this->menuPages =& $menuPages;
-	}
-
 	/**
 	* put your comment there...
 	* 
 	*/
 	public function _wp_addMenu() {
 		# Initialize
-		$menuCallback = array($this, '_wp_menuCallback');
-		$loadCallback = array($this, '_wp_pageLoad');
+		$menuCallback = $this->getHookCallback('menuCallback');
+		$loadCallback = $this->getHookCallback('pageLoad');
+		$menuPages =& $this->getServiceObjects();
 		# Add all menu pages
-		foreach ($this->getMenuPages() as $menuPage) {
+		foreach ($menuPages as $index => $menuPage) {
 			# Add menu item
 			$hookSlug = $menuPage->add($menuCallback)->getHookSlug();
 			# Bind to page load event
 			$loadHook = "load-{$hookSlug}";
 			add_action($loadHook, $loadCallback);
 			# Add to map
-			$this->hoohMap[$loadHook] = $menuPage;
+			$this->hoohMap[$loadHook] =& $menuPages[$index];
 		}
 		return;
 	}
@@ -87,7 +40,7 @@ class Service implements Services\IService {
 	* 
 	*/
 	public function _wp_menuCallback() {
-		echo $this->responder;
+		$this->response();
 	}
   
   /**
@@ -95,46 +48,11 @@ class Service implements Services\IService {
   * 
   */
   public function _wp_pageLoad() {
-  	# Initialize
-  	$loadActionName = current_filter();
-  	$serviceFrontFactory =& $this->getServiceFrontFactory();
-		# Load service front + exchange service front with the returned one
-		$this->serviceFront =& $serviceFrontFactory->createServiceFront($this->hoohMap[$loadActionName]);
+		# Load service front 
+		$this->createServiceFront(new Proxy());
 		# Dispatch
-		$this->responder =& $serviceFrontFactory->dispatch($this->serviceFront);
+		$this->dispatch();
   }
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getMenuPages() {
-		return $this->menuPages;
-	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getResponder() {
-		return $this->responder;
-	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getServiceFront() {
-		return $this->serviceFront;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getServiceFrontFactory() {
-		return $this->serviceFrontFactory;
-	}
 
 	/**
 	* put your comment there...
@@ -142,7 +60,7 @@ class Service implements Services\IService {
 	*/
 	public function & start() {
 		# Start service
-		add_action('admin_menu', array($this, '_wp_addMenu'));
+		add_action('admin_menu', $this->getHookCallback('addMenu'));
 		# Chains
 		return $this;
 	}

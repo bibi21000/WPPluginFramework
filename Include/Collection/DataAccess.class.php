@@ -27,7 +27,7 @@ class DataAccess implements IDataAccess {
 		# Initialize
 		$this->data =& $data;
 	}
-
+  
 	/**
 	* 
 	*/

@@ -16,7 +16,7 @@ interface IServiceFrontFactory {
 	/**
 	* 
 	*/
-	public function & createServiceFront(& $serviceObject);
+	public function & createServiceFront(& $service, & $serviceObject, ProxyBase & $proxy);
 	
 	/**
 	* 

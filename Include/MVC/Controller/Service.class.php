@@ -43,8 +43,7 @@ class ServiceController extends Base {
 		$responderClass[] = $structure->getController(); # Controller(s) Namespace
 		$responderClass[] = implode('', array($target->getFormat(), $structure->getControllerClassId(), 'Responder')); # Responder name
 		# Responder class
-		$responderClass = implode('\\', $viewClass);
-		die($responderClass);
+		$responderClass = implode('\\', $responderClass);
 		# Creating Responder
 		$responder = new $responderClass($result);
 		# Returning Responder

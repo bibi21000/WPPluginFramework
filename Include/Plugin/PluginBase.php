@@ -9,6 +9,7 @@ namespace WPPFW\Plugin;
 use WPPFW\Services\IServiceFrontFactory;
 use WPPFW\Obj\PHPNamespace;
 use WPPFW\MVC\IDispatcher;
+use WPPFW\Services\ProxyBase;
 
 /**
 * 
@@ -32,9 +33,23 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
+	* @var Request
+	*/
+	protected $inputs;
+	
+	/**
+	* put your comment there...
+	* 
 	* @var mixed
 	*/
 	protected $namespace;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $url;
 	
 	/**
 	* put your comment there...
@@ -49,22 +64,27 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$this->file =& $file;
 		$this->config =& $config;
 		$this->namespace = new PHPNamespace(reset(explode('\\', get_class($this))), dirname($file));
+		$this->inputs = new Request($_GET, $_POST, $_REQUEST);
+		$this->url = plugin_dir_url($file);
 	}
 
 	/**
 	* put your comment there...
 	* 
 	* @param mixed $service
+	* @param mixed $serviceObject
+	* @param ProxyBase $proxy
+	* @return ProxyBase
 	*/
-	public function & createServiceFront(& $serviceObject) {
-		# Getting Service Front Object mapped to service object namespace
-		$serviceObjectNamespace = dirname(get_class($serviceObject));
-		$serviceFrontName = basename($serviceObjectNamespace);
-		$serviceFrontClass = "{$serviceObjectNamespace}\\{$serviceFrontName}";
-		# Instantiate Service fron object
-		$serviceFront = new $serviceFrontClass($serviceObject);
-		# Return service fron
-		return $serviceFront;
+	public function & createServiceFront(& $service, & $serviceObject, ProxyBase & $proxy) {
+		# Initialize
+		
+		# Get Front Proxy class
+		
+		# Create Front Proxy object
+		
+		# Create Service Front object
+		
 	}
 
 	/**
@@ -98,8 +118,24 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* put your comment there...
 	* 
 	*/
+	public function & getInputs() {
+		return $this->inputs;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & getNamespace() {
 		return $this->namespace;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getURL() {
+		return $this->url;
 	}
 	
 }
