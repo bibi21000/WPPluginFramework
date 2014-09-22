@@ -19,23 +19,30 @@ class PluginConfigDocument extends HDT\HDTDocument {
 	*/
 	protected function & definePrototypes() {
 		# Plugin
-		$plugin = new PluginPrototype('config:plugin');
+		$plugin = new PluginPrototype('plugin', 'config', 'http://www.xptdev.com/frameworks/wordpress/plugin');
 		
 		# Object and Child Objects
-		$object = new ObjectPrototype('config:object');
-		$object->addPrototype('param', new ObjectParamPrototype('config:param'));
+		$object = new Objects\ObjectPrototype('object');
+		$object->addPrototype('param', new Objects\ObjectParamPrototype('param'));
 		
 		# MVC Config section, it retuned MVCPrototype(), dont get confused!
-		$plugin->addPrototype('mvc', new MVCPrototype('config:mvc'))
+		$mvcPrototype = $plugin->addPrototype('mvc', new MVCPrototype('mvc'));
 	
 		# Child objects
-						->addPrototype('objects', new ObjectsPrototype('config:objects'))
-						->addPrototype('object', $object)
-						->addPrototype('object/child', $object);
+		$mvcPrototype->addPrototype('objects', new Objects\ObjectsPrototype('objects'))
+									->addPrototype('object', $object)
+									->addPrototype('object', $object);
+		# MVC Types
+		$mvcPrototype->addPrototype('types', new Services\TypesPrototype('types'))
+								->addPrototype('type', new Services\TypePrototype('type'));
+		# Services prototypes
+		$plugin->addPrototype('services', new Services\ServicesPrototype('services'))
+					 ->addPrototype('service', new Services\ServicePrototype('service'))
+					 ->addPrototype('proxy', new Services\ServiceProxyPrototype('proxy'))
+					 ->addPrototype('object', $object);
 		
 		# SimpleXML Reader prototype 
 		$readerPrototype = new PluginSimpleXMLReaderPrototype();
-		$readerPrototype->addNamespace('config', 'http://www.xptdev.com/frameworks/wordpress/plugin');
 		
 		# Set Reader prototype
 		$this->setDefaultReaderPrototype($readerPrototype);
@@ -50,6 +57,22 @@ class PluginConfigDocument extends HDT\HDTDocument {
 	*/
 	public function & getMVC() {
 		return $this->getRootPrototype()->getPrototypeInstance('mvc');
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getMVCTypes() {
+		return $this->getMVC()->getPrototypeInstance('types');
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getServices() {
+		return $this->getRootPrototype()->getPrototypeInstance('services');
 	}
 	
 }

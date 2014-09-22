@@ -16,26 +16,6 @@ class SimpleXMLReaderPrototype extends HDT\ReaderPrototype {
 	/**
 	* put your comment there...
 	* 
-	* @var mixed
-	*/
-	protected $namespaces;
-	
-	/**
-	* put your comment there...
-	* 
-	* @param mixed $prefix
-	* @param mixed $url
-	*/
-	public function & addNamespace($prefix, $uri) {
-		# Register namespace
-		$this->namespaces[] = array($prefix, $uri);
-		# Chain
-		return $this;
-	}
-
-	/**
-	* put your comment there...
-	* 
 	* @param \SimpleXMLElement $node
 	* @return \SimpleXMLElement
 	*/
@@ -60,6 +40,8 @@ class SimpleXMLReaderPrototype extends HDT\ReaderPrototype {
 	public function & query($prototypeName, HDT\IWriterPrototype & $parent, HDT\IWriterPrototype & $writer) {
 		# Initialize
 		$tagName = $writer->getTagName();
+		$nsPrefix = $writer->getNamespacePrefix();
+		$nsUri = $writer->getNamespaceURI();
 		/**
 		* put your comment there...
 		* 
@@ -67,9 +49,9 @@ class SimpleXMLReaderPrototype extends HDT\ReaderPrototype {
 		*/
 		$parentNode =& $parent->getDataSource();
 		# Register namespace
-		$parentNode->registerXPathNamespace($this->namespaces[0][0], $this->namespaces[0][1]);
+		$parentNode->registerXPathNamespace($nsPrefix, $nsUri);
 		# Query
-		$dataList = $parentNode->xpath("{$tagName}");
+		$dataList = $parentNode->xpath("{$nsPrefix}:{$tagName}");
 		# Return data list
 		return $dataList;
 	}

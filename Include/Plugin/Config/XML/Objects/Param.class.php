@@ -3,7 +3,7 @@
 * 
 */
 
-namespace WPPFW\Plugin\Config\XML;
+namespace WPPFW\Plugin\Config\XML\Objects;
 
 # Imports
 use WPPFW\HDT\XML\XMLWriterPrototype;
@@ -20,7 +20,6 @@ class ObjectParamPrototype extends XMLWriterPrototype {
 	public function getObject() {
 		# Initialize
 		$node =& $this->getDataSource();
-		$result =& $this->getResult();
 		$reader =& $this->getReaderPrototype();
 		$object =& $this->getParent();
 		$objectResult =& $object->getResult();
@@ -29,5 +28,11 @@ class ObjectParamPrototype extends XMLWriterPrototype {
 		# Push to parent object
 		$objectResult['params'][$attributes['name']] = $attributes['value'];
 	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function initialize() {}
 
 }

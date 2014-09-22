@@ -12,14 +12,7 @@ use WPPFW\Plugin\Config\XML;
 * 
 */
 class PluginConfig {
-	
-	/**
-	* put your comment there...
-	* 
-	* @var PluginConfigPipe
-	*/
-	protected $pipe;
-	
+
 	/**
 	* SimpleXMLElement
 	* 
@@ -43,8 +36,6 @@ class PluginConfig {
 	public function __construct($xmlData) {
 		# Creating XML Document
 		$this->xmlDocument = new XML\PluginConfigDocument();
-		# Getting MVC objects
-		$this->pipe = new XML\PluginConfigPipe();
 		# Load document.
 		$this->load($xmlData);
 	}
@@ -63,7 +54,7 @@ class PluginConfig {
 		$rootPrototype->loadWithData($this->getHDTXMLDoc(), $this->getSimpleXML());
 		
 		# Resolve namespace.		
-		$rootPrototype->transform('resolveNamespaces');
+		$rootPrototype->transform('initialize');
 	}
 
 	/**
@@ -74,15 +65,30 @@ class PluginConfig {
 		# Initialize
 		$document =& $this->getHDTXMLDoc();
 		$mvcPrototype =& $document->getMVC();
-		$pipe =& $this->getPipe();
-		# Set Pipe current object type
-		$pipe->setCurrentObjectType('mvc');
-		# load
-		$mvcPrototype->transform('getObject', $pipe);
+		# Load MVC Objects
+		$mvcPrototype->transform('getObject')->transform('getType');
 		# Chain
 		return $this;
 	}
 
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & loadServices() {
+		# Initialize
+		$document =& $this->getHDTXMLDoc();
+		# Load Services
+		$servicesPrototype =& $document->getServices();
+		
+		$servicesPrototype->transform('getService')
+		# Load services objects
+										 	->transform('getObject');
+		print_r($document->getRootPrototype()->getResult());
+		# Chain
+		return $this;
+	}
+	
 	/**
 	* put your comment there...
 	* 
@@ -94,11 +100,13 @@ class PluginConfig {
 	/**
 	* put your comment there...
 	* 
+	* @param mixed $serviceObject
+	* @param mixed $proxy
 	*/
-	protected function & getPipe() {
-		return $this->pipe;
+	public function & getServiceMVCObject(& $serviceObject, & $proxy) {
+		
 	}
-	
+
 	/**
 	* put your comment there...
 	* 

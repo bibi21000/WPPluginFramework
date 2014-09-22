@@ -14,7 +14,7 @@ interface IWriterPrototype {
 	/**
 	* 
 	*/
-	public function & load(IHTDDocument & $document, IWriterPrototype & $parent = null);
+	public function & load(IHTDDocument & $document, & $pipe = null, IWriterPrototype & $parent = null);
 	
 	/**
 	* 
@@ -24,12 +24,17 @@ interface IWriterPrototype {
 	/**
 	* 
 	*/
+	public function & getPipe();
+	
+	/**
+	* 
+	*/
 	public function & getReaderPrototype();
 	
 	/**
 	* 
 	*/
-	public function & transform($layerName, & $pipe = null);
+	public function & transform($layerName);
 	
 	/**
 	* 
