@@ -6,8 +6,8 @@
 namespace WPPFW\Plugin;
 
 # Imports
+use WPPFW\Obj;
 use WPPFW\Services\IServiceFrontFactory;
-use WPPFW\Obj\PHPNamespace;
 use WPPFW\MVC\IDispatcher;
 use WPPFW\Services\ProxyBase;
 
@@ -22,6 +22,13 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* @var mixed
 	*/
 	protected $config;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var Obj\Factory
+	*/
+	protected $factory;
 	
 	/**
 	* put your comment there...
@@ -61,13 +68,19 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	protected function __construct($file, PluginConfig $config) {
 		# Initialize
+		$pluginParameters =& $config->getPlugin();
+		$pluginClass = get_class($this);
 		$this->file =& $file;
 		$this->config =& $config;
 		# getting namespace
-		$pluginClassComponents = explode('\\', get_class($this));
-		$this->namespace = new PHPNamespace(reset($pluginClassComponents), dirname($file));
+		$pluginClassComponents = explode('\\', $pluginClass);
+		$this->namespace = new Obj\PHPNamespace(reset($pluginClassComponents), dirname($file));
 		$this->inputs = new Request($_GET, $_POST, $_REQUEST);
 		$this->url = plugin_dir_url($file);
+		# Setting factory parameters
+		$this->factory = new Obj\Factory($this->getNamespace()->getNamespace() . '\\' . $pluginParameters['parameters']['factoryNamespace']);
+		# Push Plugin instance into factory
+		$this->getFactory()->setInstance(basename($pluginClass), $this);
 	}
 
 	/**
@@ -120,6 +133,15 @@ abstract class PluginBase implements IServiceFrontFactory {
 		return $this->config;
 	}
 
+	/**
+	* put your comment there...
+	* 
+	* @return Obj\Factory
+	*/
+	public function & getFactory() {
+		return $this->factory;
+	}
+	
 	/**
 	* put your comment there...
 	* 

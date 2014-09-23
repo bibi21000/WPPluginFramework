@@ -21,6 +21,9 @@ class PluginConfigDocument extends HDT\HDTDocument {
 		# Plugin
 		$plugin = new PluginPrototype('plugin', 'config', 'http://www.xptdev.com/frameworks/wordpress/plugin');
 		
+		# Plugin parameters
+		$plugin->addPrototype('parameters', new PluginParametersPrototype('parameters'));
+		
 		# Object and Child Objects
 		$object = new Objects\ObjectPrototype('object');
 		$object->addPrototype('param', new Objects\ObjectParamPrototype('param'));

@@ -99,6 +99,14 @@ class PluginConfig {
 	/**
 	* put your comment there...
 	* 
+	*/
+	public function & getPlugin() {
+		return $this->getHDTXMLDoc()->getRootPrototype()->getResult();
+	}
+	
+	/**
+	* put your comment there...
+	* 
 	* @param mixed $serviceObject
 	* @param mixed $proxy
 	*/
