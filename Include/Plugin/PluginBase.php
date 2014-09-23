@@ -80,13 +80,24 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	public function & createServiceFront(& $service, & $serviceObject, ProxyBase & $proxy) {
 		# Initialize
-		
+		$config =& $this->getConfig();
+		# Load MVC Configuration objects
+		$config->loadMVCObjects()
+		# Load Services Configuration objects
+					 ->loadServices();
+		# Get service configuration
+		$serviceConfig =& $config->getService($serviceObject, $proxy);
 		# Get Front Proxy class
-		
+		$frontProxyClass = $serviceConfig['proxy']['frontClass'];
 		# Create Front Proxy object
-		
+		$frontProxy = new $frontProxyClass();
+		# Getting Service MVC configuration (target, sructure, etc...)
+		$frontProxy->proxy($this, $serviceConfig);
 		# Create Service Front object
-		
+		$serviceFrontClass = $serviceConfig['serviceFront'];
+		$serviceFront = new $serviceFrontClass($frontProxy->getStructure(), $frontProxy->getTarget());
+		# return servie fron
+		return $serviceFront;
 	}
 
 	/**

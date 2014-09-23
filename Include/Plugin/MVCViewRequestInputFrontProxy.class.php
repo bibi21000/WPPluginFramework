@@ -11,53 +11,51 @@ use \WPPFW\MVC;
 /**
 * 
 */
-class MVCViewRequestInputFrontProxy implements IServiceFrontProxy {
+class MVCViewRequestInputFrontProxy extends ServiceFrontProxy {
 	
 	/**
 	* put your comment there...
 	* 
-	* @param PluginBase $PluginBase
-	* @param mixed $serviceObject
+	* @param mixed $defParams
+	* @param mixed $defNames
+	* @param mixed $structure
 	*/
-	public function & proxy(PluginBase & $plugin, & $serviceObject) {
+	protected function createMVCObjects($defParams, $defNames, $structure) {
 		# Initialize
-		$config =& $plugin->getConfig();
+		$plugin =& $this->getPlugin();
 		$inputs =& $plugin->getInputs();
 		$namespace =& $plugin->getNamespace();
-		# Get Service Object configuration
-		$soc = $config->getServiceObject($serviceObject);
-		# Getting objects defauls
-		$defParams = $soc->params;
-		$defNames = $soc->names;
-		$structure = $soc->structure;
 		# Creating objects
-		$mvcParams = new MVC\MVCViewParams(
-			$defParams->module, 
-			$defParams->controller, 
-			$defParams->action, 
-			$defParams->format,
-			$defParams->view,
-			$defParams->layout
+		$params = new MVC\MVCViewParams(
+			$defParams['module'], 
+			$defParams['controller'], 
+			$defParams['action'], 
+			$defParams['format'],
+			$defParams['view'],
+			$defParams['layout']
 			);
-		$mvcStructure = new MVC\MVCViewStructure(
+		$structure = new MVC\MVCViewStructure(
 			$namespace,
-			$structure->module, 
-			$structure->controller, 
-			$structure->controllerClassId,
-			$structure->view,
-			$structure->viewClassId
+			$structure['module'], 
+			$structure['controller'],
+			$structure['controllerClassId'],
+			$structure['view'],
+			$structure['viewClassId']
 			);
-		$mvcNames = new MVC\MVCViewParams(
-			$defNames->module, 
-			$defNames->controller, 
-			$defNames->action, 
-			$defNames->format,
-			$defNames->view,
-			$defNames->layout
+		$names = new MVC\MVCViewParams(
+			$defNames['module'], 
+			$defNames['controller'],
+			$defNames['action'],
+			$defNames['format'],
+			$defNames['view'],
+			$defNames['layout']
 			);
 		# Reading inputs
-		$inputsReader = new MVC\MVCViewRequestParamsRouter($namespace->getNamespace(), $inputs->get(), $mvcNames, $mvcParams);
-		# Chaining
-		return $mvcNames;
+		$inputsReader = new MVC\MVCViewRequestParamsRouter($namespace->getNamespace(), $inputs->get(), $names, $params);
+		# Get target 
+		$target = $inputsReader->getOutParams();
+		# Send objects back
+		$this->setMVCObjects($target, $names, $structure);
 	}
+
 }

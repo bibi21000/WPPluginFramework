@@ -24,9 +24,11 @@ class TypePrototype extends XMLWriterPrototype {
 		$reader =& $this->getReaderPrototype();
 		$pipe =& $this->getPipe();
 		# Type attributes
-		$result = $reader->getAttributesArray();
+		$attributes = $reader->getAttributesArray();
+		# Reading properties
+		$result = (array) $this->getDataSource()->children();
 		# Add type to types list
-		$typesList[$result['name']] =& $result;
+		$typesList[$attributes['name']] =& $result;
 	}
 	
 	/**

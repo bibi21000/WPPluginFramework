@@ -13,6 +13,16 @@ interface IServiceFrontProxy {
 	/**
 	* 
 	*/
-	public function & proxy(PluginBase & $input, & $serviceObject);
-
+	public function & getStructure();
+	
+	/**
+	* 
+	*/
+	public function & getTarget();
+	
+	/**
+	* 
+	*/
+	public function & proxy(PluginBase & $plugin, & $serviceConfig);
+  
 } 

@@ -11,7 +11,7 @@ use WPPFW\Services\ServiceBase;
 /**
 * 
 */
-class Service extends ServiceBase {
+class MenuService extends ServiceBase {
 	
 	/**
 	* put your comment there...

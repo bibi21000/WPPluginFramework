@@ -84,7 +84,6 @@ class PluginConfig {
 		$servicesPrototype->transform('getService')
 		# Load services objects
 										 	->transform('getObject');
-		print_r($document->getRootPrototype()->getResult());
 		# Chain
 		return $this;
 	}
@@ -103,8 +102,34 @@ class PluginConfig {
 	* @param mixed $serviceObject
 	* @param mixed $proxy
 	*/
-	public function & getServiceMVCObject(& $serviceObject, & $proxy) {
-		
+	public function & getService(& $serviceObject, & $proxy) {
+		# Initialize
+		$hdtDocument =& $this->getHDTXMLDoc();
+		$plugin =& $hdtDocument->getRootPrototype();
+		$mvc =& $plugin->getPrototypeInstance('mvc');
+		$globalObjects =& $mvc->getPrototypeInstance('objects')->getResult();
+		$mvcTypes =& $mvc->getPrototypeInstance('types')->getResult();
+		# Services list
+		$services =& $plugin->getPrototypeInstance('services')->getResult();
+		# Service configuration
+		$serviceConfig =& $services[get_class($serviceObject)];
+		# Add requested proxy key as property
+		$serviceConfig['proxy'] =& $serviceConfig['proxies'][get_class($proxy)];
+		$proxyConfig =& $serviceConfig['proxy'];
+		$objects =& $proxyConfig['objects'];
+		# Geting type
+		$serviceConfig['type'] =& $mvcTypes[$proxyConfig['typeName']];
+		# Get all TYPES objects even those are not defined
+		# inside the proxy tag.
+		foreach ($serviceConfig['type'] as $name => $class) {
+			# Add global class if its not already defined inside
+			# proxy objects!
+			if (!isset($objects[$class])) {
+				$objects[$class] =& $globalObjects[$class];
+			}
+		}
+		# Returns
+		return $serviceConfig;
 	}
 
 	/**

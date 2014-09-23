@@ -53,7 +53,7 @@ class MVCRequestParamsRouter {
 	*/
 	public function __construct($prefix, IDataAccess & $inputs, MVCParams & $names, MVCParams & $outParams) {
 		# Initialize
-		$this->prefix =& strtolower($prefix);
+		$this->prefix = strtolower($prefix);
 		$this->inputs =& $inputs;
 		$this->names =& $names;
 		$this->outParams =& $outParams;

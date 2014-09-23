@@ -87,7 +87,7 @@ class MVCStructure {
 	* put your comment there...
 	* 
 	*/
-	public function getRootNS() {
+	public function & getRootNS() {
 		return $this->rootns;
 	}
 	
