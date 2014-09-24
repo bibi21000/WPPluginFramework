@@ -7,6 +7,7 @@ namespace WPPFW\MVC\Controller;
 
 # imports
 use WPPFW\MVC;
+use WPPFW\Obj\IFactory;
 
 /**
 * 
@@ -16,14 +17,18 @@ abstract class Controller extends Base {
 	/**
 	* put your comment there...
 	* 
-	* @param MVC\IMVCServiceManager $serviceManager
-	* @param {MVC\IMVCServiceManager|MVC\MVCViewStructure} $structure
-	* @param {MVC\IMVCServiceManager|MVC\MVCViewParams|MVC\MVCViewStructure} $target
-	* @return {Controller|MVC\IMVCServiceManager|MVC\MVCViewParams|MVC\MVCViewStructure}
+	* @param IFactory $factory
+	* @param {IFactory|MVC\IMVCServiceManager} $serviceManager
+	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCViewStructure} $structure
+	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCViewParams|MVC\MVCViewStructure} $target
+	* @return {Controller|IFactory|MVC\IMVCServiceManager|MVC\MVCViewParams|MVC\MVCViewStructure}
 	*/
-	public function __construct(MVC\IMVCServiceManager & $serviceManager, MVC\MVCViewStructure & $structure, MVC\MVCViewParams & $target) {
+	public function __construct(IFactory & $factory,
+															MVC\IMVCServiceManager & $serviceManager, 
+															MVC\MVCViewStructure & $structure, 
+															MVC\MVCViewParams & $target) {
 		# Unit intialization
-		parent::__construct($serviceManager, $structure, $target);
+		parent::__construct($factory, $serviceManager, $structure, $target);
 	}
 	
 	/**
@@ -46,7 +51,7 @@ abstract class Controller extends Base {
 		# View class
 		$viewClass = implode('\\', $viewClass);
 		# Creating view
-		$view = new $viewClass($structure, $target, $result);
+		$view = new $viewClass($this->getFactory(), $structure, $target, $result);
 		# Returning view
 		return $view;
 	}

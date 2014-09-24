@@ -68,7 +68,6 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	protected function __construct($file, PluginConfig $config) {
 		# Initialize
-		$pluginParameters =& $config->getPlugin();
 		$pluginClass = get_class($this);
 		$this->file =& $file;
 		$this->config =& $config;
@@ -77,10 +76,10 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$this->namespace = new Obj\PHPNamespace(reset($pluginClassComponents), dirname($file));
 		$this->inputs = new Request($_GET, $_POST, $_REQUEST);
 		$this->url = plugin_dir_url($file);
-		# Setting factory parameters
-		$this->factory = new Obj\Factory($this->getNamespace()->getNamespace() . '\\' . $pluginParameters['parameters']['factoryNamespace']);
+		# Load Plugin Factory
+		$this->loadFactory();
 		# Push Plugin instance into factory
-		$this->getFactory()->setInstance(basename($pluginClass), $this);
+		$this->getFactory()->setInstance($this);
 	}
 
 	/**
@@ -108,7 +107,12 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$frontProxy->proxy($this, $serviceConfig);
 		# Create Service Front object
 		$serviceFrontClass = $serviceConfig['serviceFront'];
-		$serviceFront = new $serviceFrontClass($frontProxy->getStructure(), $frontProxy->getTarget());
+		$serviceFront = new $serviceFrontClass(
+			$this->getFactory(),
+			$this->getInputs(),
+			$frontProxy->getStructure(), 
+			$frontProxy->getTarget()
+		);
 		# return servie fron
 		return $serviceFront;
 	}
@@ -174,4 +178,20 @@ abstract class PluginBase implements IServiceFrontFactory {
 		return $this->url;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function loadFactory() {
+		# Get Plugin parameters
+		$config =& $this->getConfig();
+		$plugin =& $config->getPlugin();
+		$namespace =& $this->getNamespace();
+		$pluginParameters = $plugin['parameters']; 
+		# Load factory object
+		$this->factory = new $pluginParameters['factoryClass'](
+			$namespace->getNamespace() . '\\' . $pluginParameters['factoryNamespace']
+			);
+	}
+
 }

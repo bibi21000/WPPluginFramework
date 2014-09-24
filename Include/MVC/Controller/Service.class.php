@@ -7,6 +7,7 @@ namespace WPPFW\MVC\Controller;
 
 # imports
 use WPPFW\MVC;
+use WPPFW\Obj\IFactory;
 
 /**
 * 
@@ -16,14 +17,18 @@ class ServiceController extends Base {
 	/**
 	* put your comment there...
 	* 
-	* @param MVC\IMVCServiceManager $serviceManager
-	* @param {MVC\IMVCServiceManager|MVC\MVCStructure} $structure
-	* @param {MVC\IMVCServiceManager|MVC\MVCParams|MVC\MVCStructure} $target
-	* @return {ServiceController|MVC\IMVCServiceManager|MVC\MVCParams|MVC\MVCStructure}
+	* @param IFactory $factory
+	* @param {IFactory|MVC\IMVCServiceManager} $serviceManager
+	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCStructure} $structure
+	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCParams|MVC\MVCStructure} $target
+	* @return {ServiceController|IFactory|MVC\IMVCServiceManager|MVC\MVCParams|MVC\MVCStructure}
 	*/
-	public function __construct(MVC\IMVCServiceManager & $serviceManager, MVC\MVCStructure & $structure, MVC\MVCParams & $target) {
+	public function __construct(IFactory & $factory, 
+															MVC\IMVCServiceManager & $serviceManager, 
+															MVC\MVCStructure & $structure, 
+															MVC\MVCParams & $target) {
 		# Unit intialization
-		parent::__construct($serviceManager, $structure, $target);
+		parent::__construct($factory, $serviceManager, $structure, $target);
 	}
 	
 	/**

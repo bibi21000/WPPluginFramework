@@ -5,10 +5,13 @@
 
 namespace WPPFW\MVC;
 
+#Imports
+use WPPFW\Obj\IFactory;
+
 /**
 * 
 */
-abstract class Unit {
+abstract class DispatcherLayer extends MVCLayer {
 	
 	/**
 	* put your comment there...
@@ -23,15 +26,14 @@ abstract class Unit {
 	* @var mixed
 	*/
 	protected $target;
-	
+
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $structure
-	* @param mixed $target
-	* @return Unit
 	*/
-	protected function __construct(& $structure, & $target) {
+	protected function __construct(IFactory & $factory, & $structure, & $target) {
+		# MVC layer
+		parent::__construct($factory);
 		# Initialize
 		$this->structure =& $structure;
 		$this->target =& $target;

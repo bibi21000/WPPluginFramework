@@ -13,6 +13,11 @@ interface IMVCServiceManager {
 	/**
 	* 
 	*/
+	public function & getInput();
+	
+	/**
+	* 
+	*/
 	public function & getForm($name = null);
 	
 	/**

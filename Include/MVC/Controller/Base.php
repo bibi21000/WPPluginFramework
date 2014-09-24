@@ -7,11 +7,12 @@ namespace WPPFW\MVC\Controller;
 
 #Imports
 use WPPFW\MVC;
+use WPPFW\Obj\IFactory;
 
 /**
 * 
 */
-abstract class Base extends MVC\Unit implements IController, MVC\IMVCServiceManager {
+abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVCServiceManager {
 
 	/**
 	* put your comment there...
@@ -19,18 +20,19 @@ abstract class Base extends MVC\Unit implements IController, MVC\IMVCServiceMana
 	* @var mixed
 	*/
 	protected $service;
-	
+
 	/**
 	* put your comment there...
 	* 
-	* @param MVC\IMVCServiceManager $serviceManager
+	* @param IFactory $factory
+	* @param {IFactory|MVC\IMVCServiceManager} $serviceManager
 	* @param mixed $structure
 	* @param mixed $target
 	* @return Base
 	*/
-	protected function __construct(MVC\IMVCServiceManager & $serviceManager, & $structure, & $target) {
+	protected function __construct(IFactory & $factory, MVC\IMVCServiceManager & $serviceManager, & $structure, & $target) {
 		# Parent
-		parent::__construct($structure, $target);
+		parent::__construct($factory, $structure, $target);
 		# Initialize
 		$this->service =& $serviceManager;
 	}
@@ -54,6 +56,14 @@ abstract class Base extends MVC\Unit implements IController, MVC\IMVCServiceMana
 		$responder = $this->getResponder($result);
 		# Return responder
 		return $responder;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getInput() {
+		return $this->getService()->getInput();
 	}
 	
 	/**

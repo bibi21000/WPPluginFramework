@@ -5,10 +5,21 @@
 
 namespace WPPFW\MVC;
 
+# Imports
+use WPPFW\Plugin\Request as RequestInput;
+use WPPFW\Obj\IFactory;
+
 /**
 * 
 */
-class MVCDispatcher extends Unit implements IDispatcher, IMVCServiceManager {
+class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceManager {
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $input;
 	
 	/**
 	* put your comment there...
@@ -27,12 +38,17 @@ class MVCDispatcher extends Unit implements IDispatcher, IMVCServiceManager {
 	/**
 	* put your comment there...
 	* 
-	* @param MVCParams $structure
-	* @return {Dispatcher|MVCParams}
+	* @param IFactory $Factory
+	* @param {IFactory|RequestInput} $input
+	* @param {IFactory|MVCStructure|RequestInput} $structure
+	* @param {IFactory|MVCParams|MVCStructure|RequestInput} $target
+	* @return {MVCDispatcher|IFactory|MVCParams|MVCStructure|RequestInput}
 	*/
-	public function __construct(MVCStructure & $structure, MVCParams & $target) {
+	public function __construct(IFactory & $Factory, RequestInput & $input, MVCStructure & $structure, MVCParams & $target) {
 		# Unit intialization
-		parent::__construct($structure, $target);
+		parent::__construct($Factory, $structure, $target);
+		# Intialize
+		$this->input =& $input;
 	}
 	
 	/**
@@ -56,11 +72,19 @@ class MVCDispatcher extends Unit implements IDispatcher, IMVCServiceManager {
 		# Controller class
 		$controllerClass = implode('\\', $controllerClass);
 		# Creating controller
-		$controller = new $controllerClass($this, $structure, $target);
+		$controller = new $controllerClass($this->getFactory(), $this, $structure, $target);
 		# Dispatch action
 		$responder =& $controller->dispatch();
 		# Return responder
 		return $responder;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getInput() {
+		return $this->input;
 	}
 
 	/**

@@ -5,6 +5,10 @@
 
 namespace WPPFW\MVC;
 
+# Imports
+use \WPPFW\Plugin\Request as RequestInput;
+use WPPFW\Obj\IFactory;
+
 /**
 * 
 */
@@ -13,13 +17,15 @@ class MVCViewDispatcher extends MVCDispatcher {
 	/**
 	* put your comment there...
 	* 
-	* @param MVCViewStructure $structure
-	* @param {MVCViewParams|MVCViewStructure} $target
-	* @return {MVCViewDispatcher|MVCViewParams|MVCViewStructure}
+	* @param IFactory $factory
+	* @param {IFactory|RequestInput} $input
+	* @param {IFactory|MVCViewStructure|RequestInput} $structure
+	* @param {IFactory|MVCViewParams|MVCViewStructure|RequestInput} $target
+	* @return {MVCViewDispatcher|IFactory|MVCViewParams|MVCViewStructure|RequestInput}
 	*/
-	public function __construct(MVCViewStructure & $structure, MVCViewParams & $target) {
+	public function __construct(IFactory & $factory, RequestInput & $input, MVCViewStructure & $structure, MVCViewParams & $target) {
 		# Direct to parent
-		parent::__construct($structure, $target);
+		parent::__construct($factory, $input, $structure, $target);
 	}
 	
 	/**

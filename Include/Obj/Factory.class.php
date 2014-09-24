@@ -15,7 +15,14 @@ class Factory implements IFactory {
 	* 
 	* @var mixed
 	*/
-	protected $objects;
+	protected $map = array();
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $objects = array();
 	
 	/**
 	* put your comment there...
@@ -39,11 +46,24 @@ class Factory implements IFactory {
 	* put your comment there...
 	* 
 	* @param mixed $class
+	* @param mixed $factoryClass
+	*/
+	public function addClassMap($class, $factoryClass) {
+		# Add
+		$this->map[$class] = $factoryClass;
+		# Chain
+		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $class
 	* @param mixed $instance
 	*/
-	public function & setInstance($class, & $instance) {
+	public function & setInstance(& $instance) {
 		# Add instance
-		$this->objects[$class] =& $instance;
+		$this->objects[get_class($instance)] =& $instance;
 		# Chain
 		return $this;
 	}
@@ -55,9 +75,9 @@ class Factory implements IFactory {
 	*/
 	public function & create($class) {
 		# Add namepsace to class
-		$class = $this->getNamespace() . '\\' . $class;
+		$objectFactoryClass = $this->getFactoryClassName($this->getFactoryClass($class));
 		# Creating Factory object
-		$objectFactory = new $class();
+		$objectFactory = new $objectFactoryClass();
 		# Creating orignal object
 		$object = $objectFactory->getInstance($this);
 		# Returning object
@@ -84,10 +104,19 @@ class Factory implements IFactory {
 	* 
 	* @param mixed $class
 	*/
-	public function getFullClassName($class) {
+	public function getFactoryClassName($class) {
 		return $this->getNamespace() . "\\{$class}";
 	}
 
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $class
+	*/
+	public function getFactoryClass($class) {
+		return isset($this->map[$class]) ? $this->map[$class] : null;
+	}
+	
 	/**
 	* put your comment there...
 	* 
