@@ -7,12 +7,13 @@ namespace WPPFW\Plugin;
 
 # imports
 use WPPFW\Plugin\Config\XML;
+use WPPFW\Services\ServiceObject;
 
 /**
 * 
 */
 class PluginConfig {
-
+	
 	/**
 	* SimpleXMLElement
 	* 
@@ -107,20 +108,21 @@ class PluginConfig {
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $serviceObject
-	* @param mixed $proxy
+	* @param ServiceObject $serviceObject
+	* @return ServiceObject
 	*/
-	public function & getService(& $serviceObject, & $proxy) {
+	public function & getService(ServiceObject & $serviceObject) {
 		# Initialize
 		$hdtDocument =& $this->getHDTXMLDoc();
 		$plugin =& $hdtDocument->getRootPrototype();
 		$mvc =& $plugin->getPrototypeInstance('mvc');
 		$globalObjects =& $mvc->getPrototypeInstance('objects')->getResult();
 		$mvcTypes =& $mvc->getPrototypeInstance('types')->getResult();
+		$proxy =& $serviceObject->getProxy();
 		# Services list
 		$services =& $plugin->getPrototypeInstance('services')->getResult();
 		# Service configuration
-		$serviceConfig =& $services[get_class($serviceObject)];
+		$serviceConfig = $services[get_class($serviceObject)];
 		# Add requested proxy key as property
 		$serviceConfig['proxy'] =& $serviceConfig['proxies'][get_class($proxy)];
 		$proxyConfig =& $serviceConfig['proxy'];

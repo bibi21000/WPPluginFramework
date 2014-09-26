@@ -32,6 +32,20 @@ class MVCStructure {
 	* 
 	* @var mixed
 	*/
+	protected $model;
+
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $modelClassId;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
 	protected $module;
 	
 	/**
@@ -44,19 +58,22 @@ class MVCStructure {
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $rootns
+	* @param PHPNamespace $rootns
 	* @param mixed $module
 	* @param mixed $controller
-	* @param mixed $action
 	* @param mixed $controllerClassId
+	* @param mixed $model
+	* @param mixed $modelClassId
 	* @return MVCStructure
 	*/
-	public function __construct(PHPNamespace $rootns, $module, $controller, $controllerClassId) {
+	public function __construct(PHPNamespace $rootns, $module, $controller, $controllerClassId, $model, $modelClassId) {
 		# Initialize
 		$this->rootns =& $rootns;
 		$this->module =& $module;
 		$this->controller =& $controller;
 		$this->controllerClassId =& $controllerClassId;
+		$this->model =& $model;
+		$this->modelClassId =& $modelClassId;
 	}
 
 	/**
@@ -74,7 +91,23 @@ class MVCStructure {
 	public function getControllerClassId() {
 		return $this->controllerClassId;
 	}
-	
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getModel() {
+		return $this->model;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getModelClassId() {
+		return $this->modelClassId;
+	}
+
 	/**
 	* put your comment there...
 	* 
@@ -114,7 +147,7 @@ class MVCStructure {
 		# Chain
 		return $this;
 	}
-	
+
 	/**
 	* put your comment there...
 	* 

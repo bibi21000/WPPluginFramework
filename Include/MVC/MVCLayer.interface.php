@@ -8,7 +8,7 @@ namespace WPPFW\MVC;
 /**
 * 
 */
-interface IMVCLayer {
+interface IMVCComponentsLayer {
 	
 	/**
 	* 

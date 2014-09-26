@@ -6,37 +6,37 @@
 namespace WPPFW\MVC;
 
 # Imports
-use WPPFW\Obj\IFactory;
+use WPPFW\MVC\IMVCServiceManager;
 
 /**
 * 
 */
-abstract class MVCLayer implements IMVCLayer {
+abstract class MVCComponenetsLayer implements IMVCComponentsLayer {
 	
 	/**
 	* put your comment there...
 	* 
 	* @var mixed
 	*/
-	protected $factory;
+	private $serviceManager;
 	
 	/**
 	* put your comment there...
 	* 
-	* @param IFactory $factory
-	* @return {MVCLayer|IFactory}
+	* @param IMVCServiceManager $factory
+	* @return {MVCComponenetsLayer|IMVCServiceManager}
 	*/
-	protected function __construct(IFactory & $factory) {
+	public function __construct(IMVCServiceManager & $serviceManager) {
 		# Initialize
-		$this->factory =& $factory;
+		$this->serviceManager =& $serviceManager;
 	}
 	
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & getFactory() {
-		return $this->factory;
+	protected function & getMVCServiceManager() {
+		return $this->serviceManager;
 	}
 	
 }

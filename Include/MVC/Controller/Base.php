@@ -5,37 +5,13 @@
 
 namespace WPPFW\MVC\Controller;
 
-#Imports
+# Improts
 use WPPFW\MVC;
-use WPPFW\Obj\IFactory;
 
 /**
 * 
 */
-abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVCServiceManager {
-
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $service;
-
-	/**
-	* put your comment there...
-	* 
-	* @param IFactory $factory
-	* @param {IFactory|MVC\IMVCServiceManager} $serviceManager
-	* @param mixed $structure
-	* @param mixed $target
-	* @return Base
-	*/
-	protected function __construct(IFactory & $factory, MVC\IMVCServiceManager & $serviceManager, & $structure, & $target) {
-		# Parent
-		parent::__construct($factory, $structure, $target);
-		# Initialize
-		$this->service =& $serviceManager;
-	}
+abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 
 	/**
 	* put your comment there...
@@ -44,6 +20,7 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 	public function & dispatch() {
 		# Initialize
 		$target =& $this->getTarget();
+		$serviceManager =& $this->getMVCServiceManager();
 		# Get method name
 		$actionMethod = strtolower($target->getAction()) . 'Action';
 		# Check existance
@@ -52,6 +29,12 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 		}
 		# Call action
 		$result = $this->$actionMethod();
+		# Write model(s) state
+		foreach ($serviceManager->getModels() as $model) {
+			# Write model state
+			$model->writeState();
+		}
+		$this->dispatched();
 		# Creating responder
 		$responder = $this->getResponder($result);
 		# Return responder
@@ -62,8 +45,22 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 	* put your comment there...
 	* 
 	*/
+	protected function dispatched() {;}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & getInput() {
-		return $this->getService()->getInput();
+		return $this->getMVCServiceManager()->getInput();
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getFactory() {
+		return $this->getMVCServiceManager()->getFactory();
 	}
 	
 	/**
@@ -72,7 +69,7 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 	* @param mixed $name
 	*/
 	public function & getForm($name = null) {
-		return $this->getService()->getForm($name);
+		return $this->getMVCServiceManager()->getForm($name);
 	}
 
 	/**
@@ -81,7 +78,16 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 	* @param mixed $name
 	*/
 	public function & getModel($name = null) {
-		return $this->getService()->getModel($name);
+		return $this->getMVCServiceManager()->getModel($name);
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $name
+	*/
+	public function & getModels() {
+		return $this->getMVCServiceManager()->getModels();
 	}
 
 	/**
@@ -90,13 +96,13 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 	* @param mixed $result
 	*/
 	protected abstract function getResponder(& $result);
-	
+
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & getService() {
-		return $this->service;
+	public function & getStructure() {
+		return $this->getMVCServiceManager()->getStructure();
 	}
 
 	/**
@@ -105,7 +111,15 @@ abstract class Base extends MVC\DispatcherLayer implements IController, MVC\IMVC
 	* @param mixed $name
 	*/
 	public function & getTable($name = null) {
-		return $this->getService()->getTable($name);
+		return $this->getMVCServiceManager()->getTable($name);
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getTarget() {
+		return $this->getMVCServiceManager()->getTarget();
 	}
 
 } # End class

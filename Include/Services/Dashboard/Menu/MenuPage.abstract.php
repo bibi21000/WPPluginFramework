@@ -5,10 +5,17 @@
 
 namespace WPPFW\Services\Dashboard\Menu;
 
+# Imports
+use WPPFW\Services\ServiceObject;
+use WPPFW\Services\IReachableServiceObject;
+use WPPFW\Http\Url;
+
 /**
 * 
 */
-abstract class MenuPageBase implements IMenuPage {
+abstract class MenuPageBase
+extends ServiceObject
+implements IMenuPage, IReachableServiceObject {
 	
 	/**
 	* put your comment there...
@@ -125,17 +132,26 @@ abstract class MenuPageBase implements IMenuPage {
 	* put your comment there...
 	* 
 	*/
-	public function getTitle() {
-		return $this->title;
+	public function getSlug() {
+		return $this->slug;
 	}
-	
+
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function getSlug() {
-		return $this->slug;
+	public function getTitle() {
+		return $this->title;
 	}
+
+  /**
+  * put your comment there...
+  * 
+  */
+  public function getUrl() {
+		# Return URL to service object
+		return new Url(home_url('wp-admin'), array('page' => $this->getSlug())) ;
+  }
 
 	/**
 	* put your comment there...

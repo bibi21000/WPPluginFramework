@@ -27,16 +27,16 @@ class WordpressOptions {
 		# Initialize
 		$this->prefix =& $prefix;
 	}
-  
-  /**
-  * put your comment there...
-  * 
-  * @param WPOptionVariable $name
-  * @param mixed $default
-  */
-	public function get(WPOptionVariable & $variable, $default = null) {
+	
+	/**
+	* put your comment there...
+	* 
+	* @param WPOptionVariable $variable
+	* @return {WPOptionVariable|WPOptionVariable}
+	*/
+	public function get(WPOptionVariable & $variable) {
 		# Set value
-		$variable->setValue(get_option($this->getOptionFullName($variable), $default));
+		$variable->setValue(get_option($this->getOptionFullName($variable), $variable->getValue()));
 		# Return var
 		return $variable;
 	}

@@ -12,7 +12,21 @@ use WPPFW\Obj\IFactory;
 /**
 * 
 */
-class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceManager {
+class MVCDispatcher implements IDispatcher, IMVCServiceManager {
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $controller;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $factory;
 	
 	/**
 	* put your comment there...
@@ -20,6 +34,27 @@ class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceM
 	* @var mixed
 	*/
 	protected $input;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $models;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $names;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var Router
+	*/
+	protected $router;
 	
 	/**
 	* put your comment there...
@@ -38,17 +73,28 @@ class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceM
 	/**
 	* put your comment there...
 	* 
-	* @param IFactory $Factory
+	* @param IFactory $factory
 	* @param {IFactory|RequestInput} $input
 	* @param {IFactory|MVCStructure|RequestInput} $structure
 	* @param {IFactory|MVCParams|MVCStructure|RequestInput} $target
-	* @return {MVCDispatcher|IFactory|MVCParams|MVCStructure|RequestInput}
+	* @param {IFactory|MVCParams|MVCParams|MVCStructure|RequestInput} $names
+	* @param mixed $router
+	* @return MVCDispatcher
 	*/
-	public function __construct(IFactory & $Factory, RequestInput & $input, MVCStructure & $structure, MVCParams & $target) {
+	public function __construct(IFactory & $factory, 
+															RequestInput & $input, 
+															MVCStructure & $structure, 
+															MVCParams & $target,
+															MVCParams & $names,
+															IMVCRouter & $router) {
 		# Unit intialization
-		parent::__construct($Factory, $structure, $target);
-		# Intialize
+		$this->factory =& $factory;
 		$this->input =& $input;
+		$this->structure =& $structure;
+		$this->target =& $target;
+		$this->names =& $names;
+		# Creating router
+		$this->router = $router;
 	}
 	
 	/**
@@ -72,9 +118,9 @@ class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceM
 		# Controller class
 		$controllerClass = implode('\\', $controllerClass);
 		# Creating controller
-		$controller = new $controllerClass($this->getFactory(), $this, $structure, $target);
+		$this->controller = new $controllerClass($this);
 		# Dispatch action
-		$responder =& $controller->dispatch();
+		$responder =& $this->controller->dispatch();
 		# Return responder
 		return $responder;
 	}
@@ -83,10 +129,26 @@ class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceM
 	* put your comment there...
 	* 
 	*/
+	public function & getController() {
+		return $this->controller;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & getInput() {
 		return $this->input;
 	}
 
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getFactory() {
+		return $this->factory;
+	}
+	
 	/**
 	* put your comment there...
 	* 
@@ -102,7 +164,61 @@ class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceM
 	* @param mixed $name
 	*/
 	public function & getModel($name = null) {
-		
+		# Use Controller Name for model until another model
+		# is being requested
+		if (!$name) {
+			$name = $this->getTarget()->getController();
+		}
+		# Creating Model object if not already created
+		if (!isset($this->models[$name])) {
+			# Initialize vars
+			$structure =& $this->getStructure();
+			$namespace =& $structure->getRootNS();
+			$target =& $this->getTarget();
+			# Model class
+			$modelClass[] = '';
+			$modelClass[] = $namespace->getNamespace();
+			$modelClass[] = $structure->getModule();
+			$modelClass[] = $target->getModule();
+			$modelClass[] = $structure->getModel();
+			$modelClass[] = implode('', array($name, $structure->getModelClassId()));
+			# Getting model instance.
+			$this->models[$name] = \WPPFW\MVC\Model\ModelBase::getInstance(implode('\\', $modelClass), $this);
+		}
+		# Return model
+		return $this->models[$name];
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getModels() {
+		return $this->models;
+	}	
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getNames() {
+		return $this->names;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getRouter() {
+		return $this->router;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getStructure() {
+		return $this->structure;
 	}
 
 	/**
@@ -112,6 +228,14 @@ class MVCDispatcher extends DispatcherLayer implements IDispatcher, IMVCServiceM
 	*/
 	public function & getTable($name = null) {
 		
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getTarget() {
+		return $this->target;
 	}
 
 }

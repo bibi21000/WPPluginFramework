@@ -45,4 +45,31 @@ class DataAccess implements IDataAccess {
 		return $this->data;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $data
+	*/
+	public function & merge($data) {
+		# Copy all values
+		foreach ($data as $name => $value) {
+			$this->data[$name] = $value;
+		}
+		# Chain
+		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $name
+	* @param mixed $value
+	*/
+	public function & set($name, & $value) {
+		# Setting value
+		$this->data[$name] =& $value;
+		# Chain
+		return $this;
+	}
+
 }

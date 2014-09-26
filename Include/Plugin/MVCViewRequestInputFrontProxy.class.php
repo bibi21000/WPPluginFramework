@@ -23,7 +23,7 @@ class MVCViewRequestInputFrontProxy extends ServiceFrontProxy {
 	protected function createMVCObjects($defParams, $defNames, $structure) {
 		# Initialize
 		$plugin =& $this->getPlugin();
-		$inputs =& $plugin->getInputs();
+		$inputs =& $plugin->getInput();
 		$namespace =& $plugin->getNamespace();
 		# Creating objects
 		$params = new MVC\MVCViewParams(
@@ -39,6 +39,8 @@ class MVCViewRequestInputFrontProxy extends ServiceFrontProxy {
 			$structure['module'], 
 			$structure['controller'],
 			$structure['controllerClassId'],
+			$structure['model'],
+			$structure['modelClassId'],
 			$structure['view'],
 			$structure['viewClassId']
 			);

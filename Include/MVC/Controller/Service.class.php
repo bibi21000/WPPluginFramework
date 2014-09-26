@@ -13,24 +13,7 @@ use WPPFW\Obj\IFactory;
 * 
 */
 class ServiceController extends Base {
-	
-	/**
-	* put your comment there...
-	* 
-	* @param IFactory $factory
-	* @param {IFactory|MVC\IMVCServiceManager} $serviceManager
-	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCStructure} $structure
-	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCParams|MVC\MVCStructure} $target
-	* @return {ServiceController|IFactory|MVC\IMVCServiceManager|MVC\MVCParams|MVC\MVCStructure}
-	*/
-	public function __construct(IFactory & $factory, 
-															MVC\IMVCServiceManager & $serviceManager, 
-															MVC\MVCStructure & $structure, 
-															MVC\MVCParams & $target) {
-		# Unit intialization
-		parent::__construct($factory, $serviceManager, $structure, $target);
-	}
-	
+
 	/**
 	* put your comment there...
 	* 

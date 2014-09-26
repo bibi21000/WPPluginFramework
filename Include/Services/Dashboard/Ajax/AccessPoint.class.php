@@ -5,10 +5,14 @@
 
 namespace WPPFW\Services\Dashboard\Ajax;
 
+# Imports
+use WPPFW\Services\ServiceObject;
+use WPPFW\Services\IReachableServiceObject;
+
 /**
 * 
 */
-class AjaxAccessPoint {
+class AjaxAccessPoint extends ServiceObject implements IReachableServiceObject {
 
 	/**
 	* put your comment there...
@@ -46,6 +50,14 @@ class AjaxAccessPoint {
 		return $this->name;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getUrl() {
+		return 'xx';
+	}
+
 	/**
 	* put your comment there...
 	* 

@@ -7,12 +7,11 @@ namespace WPPFW\MVC\View;
 
 # Imports
 use WPPFW\MVC;
-use WPPFW\Obj\IFactory;
 
 /**
 * 
 */
-abstract class Base extends MVC\DispatcherLayer implements MVC\IMVCResponder {
+abstract class Base extends MVC\MVCComponenetsLayer implements MVC\IMVCResponder {
 	
 	/**
 	* put your comment there...
@@ -24,17 +23,23 @@ abstract class Base extends MVC\DispatcherLayer implements MVC\IMVCResponder {
 	/**
 	* put your comment there...
 	* 
-	* @param IFactory $factory
-	* @param {IFactory|MVC\MVCViewStructure} $structure
-	* @param {IFactory|MVC\MVCViewParams|MVC\MVCViewStructure} $target
+	* @param MVC\IMVCServiceManager $serviceManager
 	* @param mixed $result
 	* @return Base
 	*/
-	public function __construct(IFactory & $factory, MVC\MVCViewStructure & $structure, MVC\MVCViewParams & $target, & $result) {
+	public function __construct(MVC\IMVCServiceManager & $serviceManager, & $result) {
 		# Unit intialization
-		parent::__construct($factory, $structure, $target);
+		parent::__construct($serviceManager);
 		# Initialize
 		$this->result =& $result;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getFactory() {
+		return $this->getMVCServiceManager()->getFactory();
 	}
 
 	/**
@@ -45,5 +50,21 @@ abstract class Base extends MVC\DispatcherLayer implements MVC\IMVCResponder {
 		return $this->result;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getStructure() {
+		return $this->getMVCServiceManager()->getStructure();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getTarget() {
+		return $this->getMVCServiceManager()->getTarget();
+	}
+
 }
 

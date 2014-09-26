@@ -11,7 +11,7 @@ use WPPFW\Collection\IDataAccess;
 /**
 * 
 */
-class MVCRequestParamsRouter {
+class MVCRequestParamsRouter extends RouterBase {
 	
 	/**
 	* put your comment there...
@@ -19,13 +19,6 @@ class MVCRequestParamsRouter {
 	* @var mixed
 	*/
 	protected $inputs;
-	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $names;
 
 	/**
 	* put your comment there...
@@ -33,13 +26,6 @@ class MVCRequestParamsRouter {
 	* @var mixed
 	*/
 	protected $outParams;
-	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $prefix;
 	
 	/**
 	* put your comment there...
@@ -52,25 +38,24 @@ class MVCRequestParamsRouter {
 	* @return {MVCRequestParamsRouter|IDataAccess|MVCParams|MVCParams|MVCParams}
 	*/
 	public function __construct($prefix, IDataAccess & $inputs, MVCParams & $names, MVCParams & $outParams) {
+		# Initialize parent
+		parent::__construct($prefix, $names);
 		# Initialize
-		$this->prefix = strtolower($prefix);
 		$this->inputs =& $inputs;
-		$this->names =& $names;
 		$this->outParams =& $outParams;
-		# Getting names as protected properties
-		$reflection = new \ReflectionClass($names);
-		$properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
+		# Get names properties
+		$properties = $this->getNamesProperties();
 		# Getting inputs
 		foreach ($properties as $property) {
-			# Getting input  name
-			$name = ucfirst($property->getName());
+			# Property name
+			$name = $property->getName();
 			# Getting getter method name
-			$getter = "get{$name}";
-			$setter = "set{$name}";
+			$getter = $this->getterMethod($name);
+			$setter = $this->setterMethod($name);
 			# Bring from inputs only if it has source name and
 			# the source name is found within the inputs!
 			$inputName = $names->$getter();
-			if (($inputName !== null) && (($inputValue = $inputs->get("{$this->prefix}{$inputName}")) !== null)) {
+			if ($inputName && (($inputValue = $inputs->get($this->getParamName($inputName))) !== null)) {
 				$outParams->$setter($inputValue);
 			}
 		}
@@ -89,7 +74,7 @@ class MVCRequestParamsRouter {
 	* 
 	*/
 	public function & getNames() {
-		return $this->names;
+		return parent::getNames();
 	}
 	
 	/**
@@ -98,14 +83,6 @@ class MVCRequestParamsRouter {
 	*/
 	public function & getOutParams() {
 		return $this->outParams;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function getPrefix() {
-		return $this->prefix;
 	}
 	
 }

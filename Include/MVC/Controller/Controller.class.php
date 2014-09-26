@@ -17,20 +17,24 @@ abstract class Controller extends Base {
 	/**
 	* put your comment there...
 	* 
-	* @param IFactory $factory
-	* @param {IFactory|MVC\IMVCServiceManager} $serviceManager
-	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCViewStructure} $structure
-	* @param {IFactory|MVC\IMVCServiceManager|MVC\MVCViewParams|MVC\MVCViewStructure} $target
-	* @return {Controller|IFactory|MVC\IMVCServiceManager|MVC\MVCViewParams|MVC\MVCViewStructure}
+	* @var MVC\MVCViewParams
 	*/
-	public function __construct(IFactory & $factory,
-															MVC\IMVCServiceManager & $serviceManager, 
-															MVC\MVCViewStructure & $structure, 
-															MVC\MVCViewParams & $target) {
-		# Unit intialization
-		parent::__construct($factory, $serviceManager, $structure, $target);
-	}
+	protected $redirect;
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function dispatched() {
+		# Check if redirected!
+		if ($this->redirect) {
+			# Get new location URL.
+			$location = '';
+			# Redirect!
+			header("Location: {$location}");
+		}
+	}
+
 	/**
 	* put your comment there...
 	* 
@@ -40,6 +44,7 @@ abstract class Controller extends Base {
 		# Initialize
 		$structure =& $this->getStructure();
 		$target =& $this->getTarget();
+		$serviceManager =& $this->getMVCServiceManager();
 		# Getting view class components
 		$viewClass[] = '';
 		$viewClass[] = $structure->getRootNS()->getNamespace();
@@ -51,9 +56,19 @@ abstract class Controller extends Base {
 		# View class
 		$viewClass = implode('\\', $viewClass);
 		# Creating view
-		$view = new $viewClass($this->getFactory(), $structure, $target, $result);
+		$view = new $viewClass($serviceManager, $result);
 		# Returning view
 		return $view;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $target
+	*/
+	protected function redirect(MVC\MVCViewParams $target) {
+		# Set redirect target
+		$this->redirect =& $target;
 	}
 
 } # End class

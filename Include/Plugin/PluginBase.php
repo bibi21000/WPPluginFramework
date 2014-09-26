@@ -9,7 +9,8 @@ namespace WPPFW\Plugin;
 use WPPFW\Obj;
 use WPPFW\Services\IServiceFrontFactory;
 use WPPFW\MVC\IDispatcher;
-use WPPFW\Services\ProxyBase;
+use WPPFW\Services\ServiceObject;
+use WPPFW\Services\ServiceBase;
 
 /**
 * 
@@ -56,6 +57,13 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* 
 	* @var mixed
 	*/
+	protected $pluginConfig;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
 	protected $url;
 	
 	/**
@@ -76,6 +84,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$this->namespace = new Obj\PHPNamespace(reset($pluginClassComponents), dirname($file));
 		$this->inputs = new Request($_GET, $_POST, $_REQUEST);
 		$this->url = plugin_dir_url($file);
+		$this->pluginConfig =& $config->getPlugin();
 		# Load Plugin Factory
 		$this->loadFactory();
 		# Push Plugin instance into factory
@@ -85,36 +94,54 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $service
-	* @param mixed $serviceObject
-	* @param ProxyBase $proxy
-	* @return ProxyBase
+	* @param ServiceObject $serviceObject
+	* @return ServiceObject
 	*/
-	public function & createServiceFront(& $service, & $serviceObject, ProxyBase & $proxy) {
+	public function & createServiceFront(ServiceObject & $serviceObject) {
 		# Initialize
 		$config =& $this->getConfig();
-		# Load MVC Configuration objects
-		$config->loadMVCObjects()
-		# Load Services Configuration objects
-					 ->loadServices();
+		$proxy =& $serviceObject->getProxy();
+		# Load MVC and Service objects
+		$this->loadMVCLayerConfiguration();
 		# Get service configuration
-		$serviceConfig =& $config->getService($serviceObject, $proxy);
+		$serviceConfig =& $config->getService($serviceObject);
 		# Get Front Proxy class
 		$frontProxyClass = $serviceConfig['proxy']['frontClass'];
 		# Create Front Proxy object
 		$frontProxy = new $frontProxyClass();
 		# Getting Service MVC configuration (target, sructure, etc...)
 		$frontProxy->proxy($this, $serviceConfig);
+		# Create Service Object Router.
+		$router =& $this->createServiceObjectRouter($serviceObject, $serviceConfig);
 		# Create Service Front object
 		$serviceFrontClass = $serviceConfig['serviceFront'];
 		$serviceFront = new $serviceFrontClass(
 			$this->getFactory(),
-			$this->getInputs(),
+			$this->getInput(),
 			$frontProxy->getStructure(), 
-			$frontProxy->getTarget()
+			$frontProxy->getTarget(),
+			$frontProxy->getNames(),
+			$router
 		);
 		# return servie fron
 		return $serviceFront;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $serviceObject
+	* @param mixed $serviceConfig
+	*/
+	protected function & createServiceObjectRouter(& $serviceObject, & $serviceConfig = null) {
+		# Get Service configuration object if Service object instance is passed
+		if ($serviceConfig === null) {
+			$serviceConfig =& $this->getConfig()->getService($serviceObject);
+		}
+		# Creating router
+		$router = new $serviceConfig['routerClass']($this, $serviceObject, $serviceConfig);
+		# Return router
+		return $router;
 	}
 
 	/**
@@ -158,7 +185,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* put your comment there...
 	* 
 	*/
-	public function & getInputs() {
+	public function & getInput() {
 		return $this->inputs;
 	}
 	
@@ -168,6 +195,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	public function & getNamespace() {
 		return $this->namespace;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getPluginConfig() {
+		return $this->pluginConfig;
 	}
 	
 	/**
@@ -184,14 +219,26 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	protected function loadFactory() {
 		# Get Plugin parameters
-		$config =& $this->getConfig();
-		$plugin =& $config->getPlugin();
+		$plugin =& $this->getPluginConfig();
 		$namespace =& $this->getNamespace();
-		$pluginParameters = $plugin['parameters']; 
+		$pluginParameters = $plugin['parameters'];
 		# Load factory object
 		$this->factory = new $pluginParameters['factoryClass'](
 			$namespace->getNamespace() . '\\' . $pluginParameters['factoryNamespace']
 			);
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function loadMVCLayerConfiguration() {
+		# INitialize vars
+		$config =& $this->getConfig();
+		# Load MVC Configuration objects
+		$config->loadMVCObjects()
+		# Load Services Configuration objects
+					 ->loadServices();
 	}
 
 }

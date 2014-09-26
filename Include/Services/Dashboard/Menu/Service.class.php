@@ -24,6 +24,8 @@ class MenuService extends ServiceBase {
 		$menuPages =& $this->getServiceObjects();
 		# Add all menu pages
 		foreach ($menuPages as $index => $menuPage) {
+			# Bind Service object
+			$this->bindServiceObject($menuPage);
 			# Add menu item
 			$hookSlug = $menuPage->add($menuCallback)->getHookSlug();
 			# Bind to page load event

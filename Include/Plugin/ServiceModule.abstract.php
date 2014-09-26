@@ -39,6 +39,9 @@ abstract class ServiceModule implements IService {
 		$this->plugin =& $plugin;
 		# Initialize services
 		$this->initializeServices($plugin, $this->services);
+		# Push Service module into Plugin Factory
+		$factory =& $plugin->getFactory();
+		$factory->setInstance($this);
 	}
 
 	/**

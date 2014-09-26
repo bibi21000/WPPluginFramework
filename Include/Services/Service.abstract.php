@@ -68,6 +68,19 @@ abstract class ServiceBase implements IService {
 	/**
 	* put your comment there...
 	* 
+	* @param ServiceObject $serviceObject
+	* @return ServiceObject
+	*/
+	protected function & bindServiceObject(ServiceObject & $serviceObject) {
+		# Bind to service
+		$serviceObject->bind($this);
+		# Chain
+		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
 	* @param ProxyBase $proxy
 	* @return {ProxyBase|ServiceBase}
 	*/
@@ -76,8 +89,10 @@ abstract class ServiceBase implements IService {
 		$serviceFrontFactory =& $this->serviceFrontFactory;
 		# Get service object
 		$serviceObject =& $this->getCurrentFilterSrvObject();
+		# Prime service object
+		$serviceObject->prime($proxy);
 		# Create service object
-		$this->serviceFront =& $serviceFrontFactory->createServiceFront($this, $serviceObject, $proxy);
+		$this->serviceFront =& $serviceFrontFactory->createServiceFront($serviceObject);
 		# Chaining
 		return $this;
 	}

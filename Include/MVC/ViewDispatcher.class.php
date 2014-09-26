@@ -21,11 +21,18 @@ class MVCViewDispatcher extends MVCDispatcher {
 	* @param {IFactory|RequestInput} $input
 	* @param {IFactory|MVCViewStructure|RequestInput} $structure
 	* @param {IFactory|MVCViewParams|MVCViewStructure|RequestInput} $target
-	* @return {MVCViewDispatcher|IFactory|MVCViewParams|MVCViewStructure|RequestInput}
+	* @param {IFactory|MVCViewParams|MVCViewParams|MVCViewStructure|RequestInput} $names
+	* @param {IFactory|IMVCRouter|MVCViewParams|MVCViewParams|MVCViewStructure|RequestInput} $router
+	* @return {MVCViewDispatcher|IFactory|IMVCRouter|MVCViewParams|MVCViewParams|MVCViewStructure|RequestInput}
 	*/
-	public function __construct(IFactory & $factory, RequestInput & $input, MVCViewStructure & $structure, MVCViewParams & $target) {
+	public function __construct(IFactory & $factory,
+															RequestInput & $input, 
+															MVCViewStructure & $structure, 
+															MVCViewParams & $target,
+															MVCViewParams & $names,
+															IMVCRouter & $router) {
 		# Direct to parent
-		parent::__construct($factory, $input, $structure, $target);
+		parent::__construct($factory, $input, $structure, $target, $names, $router);
 	}
 	
 	/**

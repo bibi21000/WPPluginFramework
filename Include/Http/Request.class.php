@@ -61,6 +61,14 @@ class HTTPRequest {
 	* put your comment there...
 	* 
 	*/
+	public function isPost() {
+		return ($_SERVER['REQUEST_METHOD']	== 'POST');
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & post() {
 		return $this->post;
 	}
