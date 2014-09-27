@@ -50,7 +50,7 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 		$this->initialize();
 		# State Option Variable
 		$this->stateVariable = new WPOptionVariable(strtolower('model-state_' . get_class($this)), array());
-		$this->wpOptions = $this->getFactory()->get('WPPFW\Database\Wordpress\WordpressOptions');
+		$this->wpOptions = $this->factory()->get('WPPFW\Database\Wordpress\WordpressOptions');
 		# Read state
 		$this->readState();
 		# After read state initialization
@@ -74,8 +74,8 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* put your comment there...
 	* 
 	*/
-	public function & getFactory() {
-		return $this->getMVCServiceManager()->getFactory();
+	public function & factory() {
+		return $this->mvcServiceManager()->factory();
 	}
 	
 	/**

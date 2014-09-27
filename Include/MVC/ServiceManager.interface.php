@@ -18,7 +18,12 @@ interface IMVCServiceManager {
 	/**
 	* 
 	*/
-	public function & getFactory();
+	public function & factory();
+
+	/**
+	* 
+	*/
+	public function & input();
 	
 	/**
 	* 
@@ -28,36 +33,31 @@ interface IMVCServiceManager {
 	/**
 	* 
 	*/
-	public function & getInput();
-	
-	/**
-	* 
-	*/
 	public function & getModel($name = null);
 	
 	/**
 	* 
 	*/
-	public function & getNames();
-	
-	/**
-	* 
-	*/
-	public function & getRouter();
-	
-	/**
-	* 
-	*/
-	public function & getStructure();
-	
-	/**
-	* 
-	*/
 	public function & getTable($name = null);
+
+	/**
+	* 
+	*/
+	public function & names();
 	
 	/**
 	* 
 	*/
-	public function & getTarget();
+	public function & router();
+	
+	/**
+	* 
+	*/
+	public function & structure();
+	
+	/**
+	* 
+	*/
+	public function & target();
 
 }

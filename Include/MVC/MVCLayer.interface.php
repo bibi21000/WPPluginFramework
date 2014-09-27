@@ -13,7 +13,7 @@ interface IMVCComponentsLayer {
 	/**
 	* 
 	*/
-	public function & getFactory();
+	public function & factory();
 	
 }
 

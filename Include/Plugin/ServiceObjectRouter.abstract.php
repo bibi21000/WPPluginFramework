@@ -18,6 +18,20 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	/**
 	* put your comment there...
 	* 
+	* @var MVC\MVCParams
+	*/
+	protected $emptyTarget;
+
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $plugin;
+	
+	/**
+	* put your comment there...
+	* 
 	* @var ServiceObject
 	*/
 	protected $serviceObject;
@@ -39,11 +53,42 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	*/
 	public function __construct(PluginBase & $Plugin, IReachableServiceObject & $serviceObject, & $serviceConfig) {
 		# Initialize vars
+		$this->plugin =& $Plugin;
 		$this->serviceObject =& $serviceObject;
 		# Getting MVC Names and Target structures
 		$this->createMVCStructures($serviceConfig, $names, $this->target);
 		# Router base
 		parent::__construct($Plugin->getNamespace()->getNamespace(), $names);
+		# Create Empty Instance from Target Prototype
+		$this->createEmptyParamsObject();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function __toString() {
+		return (string) $this->homeUrl();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function createEmptyParamsObject() {
+		# Clonning target
+		$this->emptyTarget = clone $this->target;
+		# Getting all params object properties
+		$namesProperties =& $this->getNamesProperties();
+		# Build request params array
+		foreach ($namesProperties as $property) {
+			# Property name
+			$name = $property->getName();
+			# Get setter name
+			$setterName = $this->setterMethod($name);
+			# Empty properties
+			$this->emptyTarget->$setterName(null);
+		}
 	}
 
 	/**
@@ -55,6 +100,35 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	*/
 	protected abstract function createMVCStructures(& $serviceConfig, & $names, & $target);
 
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $moduleName
+	* @param mixed $serviceObjectnName
+	*/
+	public function & findRouter($moduleName, $serviceObjectName) {
+		# Initialize vars
+		$plugin =& $this->plugin();
+		$factory =& $plugin->factory();
+		# Get Service Module instance
+		/* @TODO: Get Letteral Module from Config File */
+		$module =& $factory->get("{$moduleName}Module");
+		# Get Service object
+		$serviceObject = $module->$serviceObjectName();
+		# Creating router
+		$router = $plugin->createServiceObjectRouter($serviceObject);
+		# Returns router
+		return $router;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function homeUrl() {
+		return $this->getServiceObject()->getUrl();
+	}
+	
 	/**
 	* put your comment there...
 	* 
@@ -94,7 +168,7 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 		# Service URL
 		$url = $this->getServiceObject()->getUrl();
 		# Add parameters
-		$url->params()->merge(CastObject::getInstance($target)->getArray());
+		$url->params()->merge($requestParams);
 		# Chain
 		return $url;
 	}
@@ -102,11 +176,19 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	/**
 	* put your comment there...
 	* 
+	*/
+	public function & plugin() {
+		return $this->plugin;
+	}
+
+	/**
+	* put your comment there...
+	* 
 	* @param mixed $action
 	*/
 	public function routeAction($action) {
 		# Get params object copy.
-		$target = clone $this->getTarget();
+		$target = clone $this->emptyTarget;
 		# Change action
 		$target->setAction($action);
 		# Return route

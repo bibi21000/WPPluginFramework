@@ -40,8 +40,8 @@ abstract class ServiceModule implements IService {
 		# Initialize services
 		$this->initializeServices($plugin, $this->services);
 		# Push Service module into Plugin Factory
-		$factory =& $plugin->getFactory();
-		$factory->setInstance($this);
+		$factory =& $plugin->factory();
+		$factory->setNamedInstance(basename(str_replace('_', '\\', get_class($this))), $this);
 	}
 
 	/**
@@ -50,6 +50,19 @@ abstract class ServiceModule implements IService {
 	*/
 	public function & getPlugin() {
 		return $this->plugin;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $serviceKey
+	* @param mixed $serviceObjectKey
+	*/
+	public function & getServiceObject($serviceKey, $serviceObjectKey) {
+		# Services objects
+		$serviceObjects =& $this->services[$serviceKey]->getServiceObjects();
+		# Service object instance
+		return $serviceObjects[$serviceObjectKey];
 	}
 
 	/**

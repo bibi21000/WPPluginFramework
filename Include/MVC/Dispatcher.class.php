@@ -40,7 +40,7 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	* 
 	* @var mixed
 	*/
-	protected $models;
+	protected $models = array();
 	
 	/**
 	* put your comment there...
@@ -105,8 +105,8 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	*/
 	public function & dispatch() {
 		# Initialize
-		$structure =& $this->getStructure();
-		$target =& $this->getTarget();
+		$structure =& $this->structure();
+		$target =& $this->target();
 		# Getting controller class components
 		$controllerClass[] = '';
 		$controllerClass[] = $structure->getRootNS()->getNamespace();
@@ -129,15 +129,7 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	* put your comment there...
 	* 
 	*/
-	public function & getController() {
-		return $this->controller;
-	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getInput() {
+	public function & input() {
 		return $this->input;
 	}
 
@@ -145,8 +137,16 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	* put your comment there...
 	* 
 	*/
-	public function & getFactory() {
+	public function & factory() {
 		return $this->factory;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getController() {
+		return $this->controller;
 	}
 	
 	/**
@@ -164,17 +164,18 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	* @param mixed $name
 	*/
 	public function & getModel($name = null) {
+		# Init vars
+		$target =& $this->target();
 		# Use Controller Name for model until another model
 		# is being requested
 		if (!$name) {
-			$name = $this->getTarget()->getController();
+			$name = $target->getController();
 		}
 		# Creating Model object if not already created
 		if (!isset($this->models[$name])) {
 			# Initialize vars
-			$structure =& $this->getStructure();
+			$structure =& $this->structure();
 			$namespace =& $structure->getRootNS();
-			$target =& $this->getTarget();
 			# Model class
 			$modelClass[] = '';
 			$modelClass[] = $namespace->getNamespace();
@@ -195,30 +196,6 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	*/
 	public function & getModels() {
 		return $this->models;
-	}	
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getNames() {
-		return $this->names;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getRouter() {
-		return $this->router;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getStructure() {
-		return $this->structure;
 	}
 
 	/**
@@ -234,8 +211,32 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	* put your comment there...
 	* 
 	*/
-	public function & getTarget() {
-		return $this->target;
+	public function & names() {
+		return $this->names;
 	}
 
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & router() {
+		return $this->router;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & structure() {
+		return $this->structure;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & target() {
+		return $this->target;
+	}
+	
 }

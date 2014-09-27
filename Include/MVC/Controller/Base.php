@@ -19,10 +19,10 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	*/
 	public function & dispatch() {
 		# Initialize
-		$target =& $this->getTarget();
-		$serviceManager =& $this->getMVCServiceManager();
+		$target =& $this->mvcTarget();
+		$serviceManager =& $this->mvcServiceManager();
 		# Get method name
-		$actionMethod = strtolower($target->getAction()) . 'Action';
+		$actionMethod = $target->getAction() . 'Action';
 		# Check existance
 		if (!method_exists($this, $actionMethod)) {
 			throw new \Exception('Controller action doesn\'t exists!');
@@ -51,16 +51,16 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* put your comment there...
 	* 
 	*/
-	public function & getInput() {
-		return $this->getMVCServiceManager()->getInput();
+	public function & factory() {
+		return $this->mvcServiceManager()->factory();
 	}
-	
+
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & getFactory() {
-		return $this->getMVCServiceManager()->getFactory();
+	public function & input() {
+		return $this->mvcServiceManager()->input();
 	}
 	
 	/**
@@ -69,7 +69,7 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* @param mixed $name
 	*/
 	public function & getForm($name = null) {
-		return $this->getMVCServiceManager()->getForm($name);
+		return $this->mvcServiceManager()->getForm($name);
 	}
 
 	/**
@@ -78,7 +78,7 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* @param mixed $name
 	*/
 	public function & getModel($name = null) {
-		return $this->getMVCServiceManager()->getModel($name);
+		return $this->mvcServiceManager()->getModel($name);
 	}
 
 	/**
@@ -87,7 +87,7 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* @param mixed $name
 	*/
 	public function & getModels() {
-		return $this->getMVCServiceManager()->getModels();
+		return $this->mvcServiceManager()->getModels();
 	}
 
 	/**
@@ -100,26 +100,26 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	/**
 	* put your comment there...
 	* 
-	*/
-	public function & getStructure() {
-		return $this->getMVCServiceManager()->getStructure();
-	}
-
-	/**
-	* put your comment there...
-	* 
 	* @param mixed $name
 	*/
 	public function & getTable($name = null) {
-		return $this->getMVCServiceManager()->getTable($name);
+		return $this->mvcServiceManager()->getTable($name);
 	}
 
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & getTarget() {
-		return $this->getMVCServiceManager()->getTarget();
+	public function & mvcStructure() {
+		return $this->mvcServiceManager()->structure();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & mvcTarget() {
+		return $this->mvcServiceManager()->target();
 	}
 
 } # End class

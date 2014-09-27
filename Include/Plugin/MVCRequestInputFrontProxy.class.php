@@ -24,7 +24,7 @@ class MVCRequestInputFrontProxy extends ServiceFrontProxy {
 	protected function createMVCObjects($defParams, $defNames, $structure) {
 		# Initialize
 		$plugin =& $this->getPlugin();
-		$inputs =& $plugin->getInput();
+		$inputs =& $plugin->input();
 		$namespace =& $plugin->getNamespace();
 		# Creating objects
 		$params = new MVC\MVCParams(

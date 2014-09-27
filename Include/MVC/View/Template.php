@@ -15,9 +15,18 @@ abstract class TemplateView extends Base {
 	* 
 	*/
 	public function __toString() {
+		# Return content
+		return $this->render();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function getTemplateFilePath() {
 		# Initialize
-		$target =& $this->getTarget();
-		$structure =& $this->getStructure();
+		$target =& $this->mvcTarget();
+		$structure =& $this->mvcStructure();
 		$namespace =& $structure->getRootNS();
 		# Use Action name as layout or use default if overrided!
 		$layoutFile = $target->getLayout() ? $target->getLayout() : $target->getAction();
@@ -32,20 +41,32 @@ abstract class TemplateView extends Base {
 		$layoutPath[] = "{$layoutFile}.{$layoutExtension}"; # Layout file
 		# Layout file path
 		$layoutPath = implode(DIRECTORY_SEPARATOR, $layoutPath);
-		# Get any vars ready before rendering
-		$this->render();
-		# Find template file
-		ob_start();
-		require $layoutPath;
-		$content = ob_get_clean();
-		# Return content
-		return $content;
+		# Return path
+		return $layoutPath;
 	}
 
 	/**
 	* put your comment there...
 	* 
 	*/
-	protected function render() {;}
+	protected function preRender() {;}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function render() {
+		# Pre redner 
+		$this->preRender();
+    # Get template file path
+    $layoutPath = $this->getTemplateFilePath();
+		# Open Output buffer
+		ob_start();
+		# Get file content
+		require $layoutPath;
+		$content = ob_get_clean();
+		# Returtns
+		return $content;
+	}
 	
 }

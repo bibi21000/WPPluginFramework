@@ -63,7 +63,19 @@ class Factory implements IFactory {
 	*/
 	public function & setInstance(& $instance) {
 		# Add instance
-		$this->objects[get_class($instance)] =& $instance;
+		return $this->setNamedInstance(get_class($instance), $instance);
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $name
+	* @param mixed $instance
+	* @return Factory
+	*/
+	public function & setNamedInstance($name, & $instance) {
+		# Add instance
+		$this->objects[$name] =& $instance;
 		# Chain
 		return $this;
 	}

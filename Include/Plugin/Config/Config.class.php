@@ -112,19 +112,28 @@ class PluginConfig {
 	* @return ServiceObject
 	*/
 	public function & getService(ServiceObject & $serviceObject) {
+		return $this->getServiceNamedProxy($serviceObject, get_class($serviceObject->getProxy()));
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param ServiceObject $serviceObject
+	* @param mixed $proxyName
+	*/
+	public function & getServiceNamedProxy(ServiceObject & $serviceObject, $proxyName) {
 		# Initialize
 		$hdtDocument =& $this->getHDTXMLDoc();
 		$plugin =& $hdtDocument->getRootPrototype();
 		$mvc =& $plugin->getPrototypeInstance('mvc');
 		$globalObjects =& $mvc->getPrototypeInstance('objects')->getResult();
 		$mvcTypes =& $mvc->getPrototypeInstance('types')->getResult();
-		$proxy =& $serviceObject->getProxy();
 		# Services list
 		$services =& $plugin->getPrototypeInstance('services')->getResult();
 		# Service configuration
 		$serviceConfig = $services[get_class($serviceObject)];
 		# Add requested proxy key as property
-		$serviceConfig['proxy'] =& $serviceConfig['proxies'][get_class($proxy)];
+		$serviceConfig['proxy'] =& $serviceConfig['proxies'][$proxyName];
 		$proxyConfig =& $serviceConfig['proxy'];
 		$objects =& $proxyConfig['objects'];
 		# Geting type
@@ -140,6 +149,22 @@ class PluginConfig {
 		}
 		# Returns
 		return $serviceConfig;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param ServiceObject $serviceObject
+	* @return ServiceObject
+	*/
+	public function & getServiceHomeProxy(ServiceObject & $serviceObject) {
+		# Initialize vars
+		$plugin =& $this->getPlugin();
+		$services =& $plugin['services'];
+		# Get service object configuration
+		$serviceConfig =& $services[get_class($serviceObject)];
+		# Get service configuration
+		return $this->getServiceNamedProxy($serviceObject, $serviceConfig['homeProxy']);
 	}
 
 	/**

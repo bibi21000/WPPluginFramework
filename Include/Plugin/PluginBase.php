@@ -88,7 +88,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 		# Load Plugin Factory
 		$this->loadFactory();
 		# Push Plugin instance into factory
-		$this->getFactory()->setInstance($this);
+		$this->factory()->setInstance($this);
 	}
 
 	/**
@@ -116,8 +116,8 @@ abstract class PluginBase implements IServiceFrontFactory {
 		# Create Service Front object
 		$serviceFrontClass = $serviceConfig['serviceFront'];
 		$serviceFront = new $serviceFrontClass(
-			$this->getFactory(),
-			$this->getInput(),
+			$this->factory(),
+			$this->input(),
 			$frontProxy->getStructure(), 
 			$frontProxy->getTarget(),
 			$frontProxy->getNames(),
@@ -133,10 +133,10 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* @param mixed $serviceObject
 	* @param mixed $serviceConfig
 	*/
-	protected function & createServiceObjectRouter(& $serviceObject, & $serviceConfig = null) {
+	public function & createServiceObjectRouter(& $serviceObject, & $serviceConfig = null) {
 		# Get Service configuration object if Service object instance is passed
 		if ($serviceConfig === null) {
-			$serviceConfig =& $this->getConfig()->getService($serviceObject);
+			$serviceConfig =& $this->getConfig()->getServiceHomeProxy($serviceObject);
 		}
 		# Creating router
 		$router = new $serviceConfig['routerClass']($this, $serviceObject, $serviceConfig);
@@ -158,19 +158,19 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
-	* @return PluginConfig
+	* @return Obj\Factory
 	*/
-	public function & getConfig() {
-		return $this->config;
+	public function & factory() {
+		return $this->factory;
 	}
 
 	/**
 	* put your comment there...
 	* 
-	* @return Obj\Factory
+	* @return PluginConfig
 	*/
-	public function & getFactory() {
-		return $this->factory;
+	public function & getConfig() {
+		return $this->config;
 	}
 	
 	/**
@@ -179,14 +179,6 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	public function getFile() {
 		return $this->file;
-	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getInput() {
-		return $this->inputs;
 	}
 	
 	/**
@@ -213,6 +205,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 		return $this->url;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & input() {
+		return $this->inputs;
+	}
+
 	/**
 	* put your comment there...
 	* 

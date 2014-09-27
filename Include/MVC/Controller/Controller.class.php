@@ -42,9 +42,9 @@ abstract class Controller extends Base {
 	*/
 	public function getResponder(& $result) {
 		# Initialize
-		$structure =& $this->getStructure();
-		$target =& $this->getTarget();
-		$serviceManager =& $this->getMVCServiceManager();
+		$structure =& $this->mvcStructure();
+		$target =& $this->mvcTarget();
+		$serviceManager =& $this->mvcServiceManager();
 		# Getting view class components
 		$viewClass[] = '';
 		$viewClass[] = $structure->getRootNS()->getNamespace();

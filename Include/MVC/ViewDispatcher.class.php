@@ -41,7 +41,7 @@ class MVCViewDispatcher extends MVCDispatcher {
 	*/
 	public function & dispatch() {
 		# Initialize
-		$target =& $this->getTarget();
+		$target =& $this->target();
 		# If not controller specified get it from view
 		if (!$target->getController()) {
 			$target->setController($target->getView());

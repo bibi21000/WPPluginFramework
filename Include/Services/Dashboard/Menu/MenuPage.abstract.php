@@ -150,7 +150,7 @@ implements IMenuPage, IReachableServiceObject {
   */
   public function getUrl() {
 		# Return URL to service object
-		return new Url(home_url('wp-admin'), array('page' => $this->getSlug())) ;
+		return new Url(home_url('wp-admin/admin.php'), array('page' => $this->getSlug())) ;
   }
 
 	/**

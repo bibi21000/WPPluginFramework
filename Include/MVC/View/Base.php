@@ -32,21 +32,45 @@ abstract class Base extends MVC\MVCComponenetsLayer implements MVC\IMVCResponder
 		parent::__construct($serviceManager);
 		# Initialize
 		$this->result =& $result;
+		# Initialize view
+		$this->initialize();
 	}
 
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & getFactory() {
-		return $this->getMVCServiceManager()->getFactory();
+	public function & factory() {
+		return $this->mvcServiceManager()->factory();
 	}
 
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & getResult() {
+	protected function initialize() {;}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & mvcStructure() {
+		return $this->mvcServiceManager()->structure();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & mvcTarget() {
+		return $this->mvcServiceManager()->target();
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & result() {
 		return $this->result;
 	}
 	
@@ -54,16 +78,8 @@ abstract class Base extends MVC\MVCComponenetsLayer implements MVC\IMVCResponder
 	* put your comment there...
 	* 
 	*/
-	public function & getStructure() {
-		return $this->getMVCServiceManager()->getStructure();
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getTarget() {
-		return $this->getMVCServiceManager()->getTarget();
+	public function & router() {
+		return $this->mvcServiceManager()->router();
 	}
 
 }
