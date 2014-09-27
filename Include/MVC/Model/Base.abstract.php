@@ -19,22 +19,22 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* 
 	* @var mixed
 	*/
-	private $params;
-
-	/**
-	* put your comment there...
-	* 
-	* @var WPOptionVariable
-	*/
-	private $stateVariable;
+	private $config;
 	
 	/**
 	* put your comment there...
 	* 
 	* @var mixed
 	*/
-	private $wpOptions;
+	private $params;
 
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	private $stateAdapter;
+	
 	/**
 	* put your comment there...
 	* 
@@ -48,9 +48,10 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 		$this->params = new \WPPFW\Collection\DataAccess();
 		# Next layer initialization
 		$this->initialize();
-		# State Option Variable
-		$this->stateVariable = new WPOptionVariable(strtolower('model-state_' . get_class($this)), array());
-		$this->wpOptions = $this->factory()->get('WPPFW\Database\Wordpress\WordpressOptions');
+		# Load config
+		$this->config =& $this->loadConfig();
+		# Create State adapter object associated with this model
+		$this->stateAdapter = new $this->config['stateType']($this->factory(), get_class($this));
 		# Read state
 		$this->readState();
 		# After read state initialization
@@ -74,6 +75,15 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* put your comment there...
 	* 
 	*/
+	protected function & getStateAdapter() {
+		return $this->stateAdapter;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @return WPPFW\Obj\IFactory
+	*/
 	public function & factory() {
 		return $this->mvcServiceManager()->factory();
 	}
@@ -82,17 +92,7 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* put your comment there...
 	* 
 	*/
-	protected function & getStateOptionVar() {
-		return $this->stateVariable;
-	}
-	
-	/**
-	* put your comment there...
-	* 
-	*/
-	protected function & getWPOptions() {
-		return $this->wpOptions;
-	}
+	protected abstract function & loadConfig();
 	
 	/**
 	* put your comment there...
@@ -128,12 +128,9 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	*/
 	public function readState() {
 		# Initialize vars
-		$stateVar =& $this->getStateOptionVar();
-		$wpOptions =& $this->getWPOptions();
-		# Querying state
-		$wpOptions->get($stateVar);
+		$stateAdapter =& $this->getStateAdapter();
 		# Copying state data to current instance
-		foreach ($stateVar->getValue() as $propName => $value) {
+		foreach ($stateAdapter->read() as $propName => $value) {
 			# Set value
 			$this->$propName = $value;
 		}
@@ -153,21 +150,19 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	*/
 	public function writeState() {
 		# Initialize vars
-		$state = array();
+		$stateVars = array();
+		$stateAdapter =& $this->getStateAdapter();
 		$moduleClassReflection = new \ReflectionClass($this);
-		$wpOptions =& $this->getWPOptions();
-		$stateVar =& $this->getStateOptionVar();
 		# Copy all protected properties
 		$statePropperties = $moduleClassReflection->getProperties(\ReflectionProperty::IS_PROTECTED);
 		foreach ($statePropperties as $property) {
 			# Getting property name
 			$propertyName = $property->getName();
 			# get value.
-			$state[$propertyName] =& $this->$propertyName;
+			$stateVars[$propertyName] =& $this->$propertyName;
 		}
-		# Write Wordpress options table
-		$stateVar->setValue($state);
-		$wpOptions->set($stateVar);
+		# Write to state adapter
+		$stateAdapter->write($stateVars);
 		# Chain
 		return $this;
 	}

@@ -11,15 +11,15 @@ use WPPFW\HDT\XML\XMLWriterPrototype;
 /**
 * 
 */
-class TypePrototype extends XMLWriterPrototype {
+class ModelPrototype extends XMLWriterPrototype {
 
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function getType() {
+	public function getService() {
 		# Initialize
-		$typesList =& $this->getParentResult();
+		$modelsList =& $this->getParentResult();
 		$result =& $this->getResult();
 		$reader =& $this->getReaderPrototype();
 		# Type attributes
@@ -27,7 +27,7 @@ class TypePrototype extends XMLWriterPrototype {
 		# Reading properties
 		$result = (array) $this->getDataSource()->children();
 		# Add type to types list
-		$typesList[$attributes['name']] =& $result;
+		$modelsList[$attributes['id']] =& $result;
 	}
 	
 	/**

@@ -101,6 +101,14 @@ class PluginConfig {
 	* put your comment there...
 	* 
 	*/
+	public function & getModels() {
+		return $this->getHDTXMLDoc()->getModels()->getResult();
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & getPlugin() {
 		return $this->getHDTXMLDoc()->getRootPrototype()->getResult();
 	}

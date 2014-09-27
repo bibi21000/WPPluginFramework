@@ -88,7 +88,8 @@ abstract class PluginBase implements IServiceFrontFactory {
 		# Load Plugin Factory
 		$this->loadFactory();
 		# Push Plugin instance into factory
-		$this->factory()->setInstance($this);
+		$factory =& $this->factory();
+		$factory->setNamedInstance(__CLASS__, $this);
 	}
 
 	/**

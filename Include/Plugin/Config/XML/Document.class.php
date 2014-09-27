@@ -39,10 +39,15 @@ class PluginConfigDocument extends HDT\HDTDocument {
 		$mvcPrototype->addPrototype('types', new Services\TypesPrototype('types'))
 								->addPrototype('type', new Services\TypePrototype('type'));
 		# Services prototypes
-		$plugin->addPrototype('services', new Services\ServicesPrototype('services'))
+		$servicesPrototype = new Services\ServicesPrototype('services');
+		$plugin->addPrototype('services', $servicesPrototype)
 					 ->addPrototype('service', new Services\ServicePrototype('service'))
 					 ->addPrototype('proxy', new Services\ServiceProxyPrototype('proxy'))
 					 ->addPrototype('object', $object);
+		
+		# Models Prototypes
+		$servicesPrototype->addPrototype('models', new Services\ModelsPrototype('models'))
+											->addPrototype('model', new Services\ModelPrototype('model'));
 		
 		# SimpleXML Reader prototype 
 		$readerPrototype = new PluginSimpleXMLReaderPrototype();
@@ -54,6 +59,14 @@ class PluginConfigDocument extends HDT\HDTDocument {
 		return $plugin;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getModels() {
+		return $this->getServices()->getPrototypeInstance('models');
+	}
+
 	/**
 	* put your comment there...
 	* 
