@@ -19,7 +19,7 @@ abstract class Controller extends Base {
 	* 
 	* @var MVC\MVCViewParams
 	*/
-	protected $redirect;
+	private $redirect;
 	
 	/**
 	* put your comment there...
@@ -28,10 +28,8 @@ abstract class Controller extends Base {
 	protected function dispatched() {
 		# Check if redirected!
 		if ($this->redirect) {
-			# Get new location URL.
-			$location = '';
 			# Redirect!
-			header("Location: {$location}");
+			header("Location: {$this->redirect}");
 		}
 	}
 
@@ -64,11 +62,11 @@ abstract class Controller extends Base {
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $target
+	* @param mixed $location
 	*/
-	protected function redirect(MVC\MVCViewParams $target) {
+	protected function redirect($location) {
 		# Set redirect target
-		$this->redirect =& $target;
+		$this->redirect =& $location;
 	}
 
 } # End class

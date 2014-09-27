@@ -110,6 +110,14 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* put your comment there...
 	* 
 	*/
+	public function & mvcTarget() {
+		return $this->mvcServiceManager()->target();
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & params() {
 		return $this->params;
 	}
@@ -131,6 +139,14 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 		}
 	}
 
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & router() {
+		return $this->mvcServiceManager()->router();
+	}
+	
 	/**
 	* put your comment there...
 	* 

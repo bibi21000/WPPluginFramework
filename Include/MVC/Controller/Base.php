@@ -22,7 +22,7 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 		$target =& $this->mvcTarget();
 		$serviceManager =& $this->mvcServiceManager();
 		# Get method name
-		$actionMethod = $target->getAction() . 'Action';
+		$actionMethod = lcfirst($target->getAction()) . 'Action';
 		# Check existance
 		if (!method_exists($this, $actionMethod)) {
 			throw new \Exception('Controller action doesn\'t exists!');
@@ -122,4 +122,12 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 		return $this->mvcServiceManager()->target();
 	}
 
-} # End class
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & router() {
+		return $this->mvcServiceManager()->router();
+	}
+
+}
