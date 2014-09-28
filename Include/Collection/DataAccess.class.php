@@ -30,6 +30,18 @@ class DataAccess implements IDataAccess {
 		}
 	}
   
+  /**
+  * put your comment there...
+  * 
+  * @param mixed $value
+  */
+  public function & append($value) {
+  	# Add
+		$this->data[] =& $value;
+		# Chain
+		return $this;
+  }
+
 	/**
 	* 
 	*/
