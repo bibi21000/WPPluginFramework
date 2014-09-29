@@ -8,4 +8,4 @@ namespace WPPFW\MVC\Form\Renderer;
 /**
 * 
 */
-class CheckBoxListInputElement {}
+class CheckBoxListInputElement extends StructuredElement {}
