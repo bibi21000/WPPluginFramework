@@ -11,7 +11,21 @@ use WPPFW\Collection\ArrayIterator;
 /**
 * 
 */
-abstract class FormRendererElementsCollection extends ArrayIterator {
+abstract class FormRendererElementsCollection extends ArrayIterator implements Renderer\IRenderer {
+
+	/**
+	* put your comment there...
+	* 
+	* @var Form\IElement
+	*/
+	protected $element;
+
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $form;
 
 	/**
 	* put your comment there...
@@ -23,10 +37,33 @@ abstract class FormRendererElementsCollection extends ArrayIterator {
 	/**
 	* put your comment there...
 	* 
+	* @var mixed
 	*/
-	public function __construct() {
+	protected $name;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $parentRenderer;
+
+	/**
+	* put your comment there...
+	* 
+	* @param Form\IElement $element
+	* @param {Form\IElement|IRenderer} $parent
+	* @return {FormRendererElementsCollection|Form\IElement|IRenderer}
+	*/
+	public function __construct(FormRenderer & $form, IElement & $element, Renderer\IRenderer & $parent = null) {
 		# Iterator
 		parent::__construct($this->elements);
+		# INit vars
+		$this->form =& $form;
+		$this->element =& $element;
+		$this->parentRenderer =& $parent;
+		# Build renderer name
+		$this->name = $this->buildNameString();
 	}
 	
 	/**
@@ -53,6 +90,41 @@ abstract class FormRendererElementsCollection extends ArrayIterator {
 		$this->elements[] =& $element;
 		# Chain
 		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function buildNameString() {
+		# Build name
+		$name = $this->form->getElementName($this->getParent()->getName(), $this->getElement()->getName());
+		# Chain
+		return $name;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getElement() {
+		return $this->element;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getParent() {
+		return $this->parentRenderer;
 	}
 
 	/**

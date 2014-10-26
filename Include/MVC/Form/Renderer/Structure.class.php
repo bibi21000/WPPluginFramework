@@ -11,45 +11,8 @@ use WPPFW\MVC\Form;
 /**
 * 
 */
-class StructuredElement extends Form\FormRendererElementsCollection implements IRenderer {
+class StructuredElement extends Form\FormRendererElementsCollection {
 	
-	/**
-	* put your comment there...
-	* 
-	* @var Form\IElement
-	*/
-	protected $element;
-	
-	/**
-	* put your comment there...
-	* 
-	* @var mixed
-	*/
-	protected $form;
-	
-	/**
-	* put your comment there...
-	* 
-	* @param Form\FormRenderer $form
-	* @param {Form\FormRenderer|IElement} $element
-	* @return {StructuredElement|Form\FormRenderer|IElement}
-	*/
-	public function __construct(Form\FormRenderer & $form, Form\IElement & $element) {
-		# Renders Collection base class
-		parent::__construct();
-		# INit vars
-		$this->form =& $form;
-		$this->element =& $element;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & getElement() {
-		return $this->element;
-	}
-
 	/**
 	* put your comment there...
 	* 

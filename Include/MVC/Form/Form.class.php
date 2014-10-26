@@ -28,11 +28,13 @@ class Form extends ElementsCollection {
 	* put your comment there...
 	* 
 	* @param mixed $prefix
+	* @param mixed $id
+	* @param mixed $name
 	* @return Form
 	*/
-	public function __construct($prefix) {
+	public function __construct($prefix, $id, $name) {
 		# Initialize parent.
-		parent::__construct();
+		parent::__construct($id, $name);
 		# Initaiuze vars
 		$this->prefix = strtolower($prefix);
 	}
@@ -56,7 +58,7 @@ class Form extends ElementsCollection {
 		# Aggregate all fields data
 		$this->getElementsData($this, $data, $this->getPrefix());
 		# Returns data
-		return $data;
+		return array($this->getName() => $data);
 	}
 
 	/**
@@ -97,7 +99,7 @@ class Form extends ElementsCollection {
 					$data =& $data[$this->getElementName($element->getName(), $prefix)];
 				}
 				# Process IContainerElement and IStructuredElement
-				$this->getElementsData($element->elements(), $data);
+				$this->getElementsData($element, $data);
 			}
 		}
 		return $data;		
@@ -125,7 +127,7 @@ class Form extends ElementsCollection {
 	* @param mixed $values
 	*/
 	public function & setData($values) {
-		return $this->setElementsData($this, $values, $this->getPrefix());
+		return $this->setElementsData($this, $values[$this->getName()], $this->getPrefix());
 	}
 
 	/**
@@ -167,7 +169,7 @@ class Form extends ElementsCollection {
 					$value = $values;
 				}
 				# Process IContainerElement and IStructuredElement
-				$this->setElementsData($element->elements(), $value);
+				$this->setElementsData($element, $value);
 			}
 		}
 		return $this;

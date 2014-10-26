@@ -15,4 +15,9 @@ interface IElement {
 	*/
 	public function getId();
 	
+	/**
+	* 
+	*/
+	public function getName();
+	
 }

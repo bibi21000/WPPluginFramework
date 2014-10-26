@@ -11,7 +11,7 @@ use WPPFW\Collection\ArrayIterator;
 /**
 * 
 */
-class ElementsCollection extends ArrayIterator {
+class ElementsCollection extends ArrayIterator implements IElement {
 
 	/**
 	* put your comment there...
@@ -23,10 +23,30 @@ class ElementsCollection extends ArrayIterator {
 	/**
 	* put your comment there...
 	* 
+	* @var mixed
 	*/
-	public function __construct() {
+	protected $id;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $name;
+	
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $id
+	* @param mixed $name
+	* @return ElementsCollection
+	*/
+	public function __construct($id, $name) {
 		# Iterator
 		parent::__construct($this->elements);
+		# Init vars
+		$this->id =& $id;
+		$this->name =& $name;
 	}
 	
 	/**
@@ -53,6 +73,22 @@ class ElementsCollection extends ArrayIterator {
 		$this->elements[] =& $element;
 		# Chain
 		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getId() {
+		return $this->id;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getName() {
+		return $this->name;
 	}
 
 }

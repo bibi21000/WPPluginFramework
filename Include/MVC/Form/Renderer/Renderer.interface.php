@@ -18,6 +18,16 @@ interface IRenderer {
 	/**
 	* 
 	*/
+	public function getName();
+
+	/**
+	* 
+	*/
+	public function & getParent();
+	
+	/**
+	* 
+	*/
 	public function render(& $document, & $parent);
 	
 }

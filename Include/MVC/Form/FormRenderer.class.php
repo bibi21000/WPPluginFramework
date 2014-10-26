@@ -39,7 +39,7 @@ class FormRenderer extends FormRendererElementsCollection {
 	*/
 	public function __construct(Form & $form) {
 		# Initialize Elements collection
-		parent::__construct();
+		parent::__construct($this, $form);
 		# Initialize
 		$this->form =& $form;
 		$this->html = new \DOMDocument();
@@ -59,6 +59,14 @@ class FormRenderer extends FormRendererElementsCollection {
 		return $html;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function buildNameString() {
+		return $this->getElement()->getName();
+	}
+
 	/**
 	* put your comment there...
 	* 
@@ -114,6 +122,16 @@ class FormRenderer extends FormRendererElementsCollection {
 	/**
 	* put your comment there...
 	* 
+	* @param mixed $parentName
+	* @param mixed $name
+	*/
+	public function getElementName($parentName, $name) {
+		return "{$parentName}[{$name}]";
+	}
+
+	/**
+	* put your comment there...
+	* 
 	* @param ElementsCollection $elements
 	* @param {ElementsCollection|FormRendererElementsCollection} $pElement
 	* @return {ElementsCollection|FormRenderer|FormRendererElementsCollection}
@@ -130,13 +148,13 @@ class FormRenderer extends FormRendererElementsCollection {
 			# Recusive
 			if ($element instanceof IElementsStructure) {
 				# Creating Structure element
-				$renderer = new $renderClass($this, $element);
+				$renderer = new $renderClass($this, $element, $pRenderer);
 				# Do Recusive elements
-				$this->loadElementsList($element->elements(), $renderer);
+				$this->loadElementsList($element, $renderer);
 			}
 			else {
 				# Creating inpu element render
-				$renderer = new $renderClass($element);
+				$renderer = new $renderClass($this, $element, $pRenderer);
 			}
 			# Add to parnt elements collection
 			$pRenderer->add($renderer);
@@ -158,11 +176,11 @@ class FormRenderer extends FormRendererElementsCollection {
 	/**
 	* put your comment there...
 	* 
+	* @param mixed $document
+	* @param mixed $parent
+	* @return FormRenderer
 	*/
-	public function & render() {
-		# Initialize 
-		$form =& $this->getForm();
-		$doc =& $this->getDoc();
+	public function & render(& $doc, & $parent) {
 		# Create form element
 		$formElement = $doc->createElement('form');
 		$list = $doc->createElement('ul');
@@ -170,11 +188,24 @@ class FormRenderer extends FormRendererElementsCollection {
 		$this->renderElementsList($this, $doc, $list);
 		# Append for elements
 		$formElement->appendChild($list);
-		$doc->appendChild($formElement);		
+		$parent->appendChild($formElement);		
 		# Return HTML string
 		return $this;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & renderDoc() {
+		# Initialize 
+		$doc =& $this->getDoc();
+		# Render using internal document
+		$this->render($doc, $doc);
+		# Return HTML string
+		return $this;
+	}
+
 	/**
 	* put your comment there...
 	* 
@@ -186,13 +217,16 @@ class FormRenderer extends FormRendererElementsCollection {
 	protected function renderElementsList(FormRendererElementsCollection & $renderers, & $document, & $parent) {
 		# Render elements
 		foreach ($renderers as $renderer) {
-			# Form row
-			$row = ($renderer->getElement() instanceof IElementsStructure) ?
-							new Renderer\StructureGenericRow($renderer) :
-							new Renderer\InputGenericRow($renderer);
+			# Get row class for element type
+			$rowClass = ($renderer->getElement() instanceof IElementsStructure) ?
+							'Renderer\StructureGenericRow' :
+							'Renderer\InputGenericRow';
+			# Add root namespace to class name
+			$rowClass = "WPPFW\\MVC\\Form\\{$rowClass}";
+			# Create Row
+			$row = new $rowClass($renderer);
 			# Render row
 			$row->render($document, $parent);
-			echo get_class($renderer->getElement()) . '<br>';
 		}
 		# Chain
 		return $this;
