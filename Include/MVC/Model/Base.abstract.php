@@ -20,6 +20,20 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* @var mixed
 	*/
 	private $config;
+
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $errorCodes = array();
+
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	protected $errorMessages = array();
 	
 	/**
 	* put your comment there...
@@ -61,6 +75,84 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	/**
 	* put your comment there...
 	* 
+	* @param mixed $message
+	* @param mixed $code
+	*/
+	public function & addError($message, $code = null) {
+		# Store error message
+		$this->errorMessages[] =& $message;
+		# Map the error code at the same offset on errorCodes var
+		$this->errorCodes[] =& $code;
+		# Chain
+		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & clearErrors() {
+		# CLear error messages
+		$this->errorMessages = array();
+		# CLear error codes
+		$this->errorCodes = array();
+		# Chaining
+		return $this;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	* @return WPPFW\Obj\IFactory
+	*/
+	public function & factory() {
+		return $this->mvcServiceManager()->factory();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getCleanErrors() {
+		# Get errors copy
+		$errorMessages = $this->errorMessages;
+		# Clear errors
+		$this->clearErrors();
+		# Return errors
+		return $errorMessages;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $index
+	*/
+	public function & getError($index) {
+		# Get error or null if not exists
+		$errorMessage = $this->errorMessages[$index] ? $this->errorMessages[$index] : null;
+		# Return error object
+		return $errorMessage;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getErrorCodes() {
+		return $this->errorCodes;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getErrors() {
+		return $this->errorMessages;
+	}
+	
+	/**
+	* put your comment there...
+	* 
 	* @param mixed $modelClass
 	* @param MVC\IMVCComponentsLayer $serviceManager
 	*/
@@ -78,14 +170,13 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	protected function & getStateAdapter() {
 		return $this->stateAdapter;
 	}
-
+	
 	/**
 	* put your comment there...
 	* 
-	* @return WPPFW\Obj\IFactory
 	*/
-	public function & factory() {
-		return $this->mvcServiceManager()->factory();
+	public function hasErrors() {
+		return !empty($this->errorMessages);
 	}
 	
 	/**
@@ -120,6 +211,21 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	*/
 	public function & params() {
 		return $this->params;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param ModelBase $model
+	*/
+	public function & PipeErrors(ModelBase & $model) {
+		# Get reference to error messages and codes so
+		# that all errors writen to this model would
+		# be redirected to the passed model
+		$this->errorMessages =& $model->errorMessages;
+		$this->errorCodes =& $model->errorCodes;
+		# Chain
+		return $this;
 	}
 
 	/**

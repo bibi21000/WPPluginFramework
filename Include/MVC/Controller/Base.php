@@ -30,9 +30,11 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 		# Call action
 		$result = $this->$actionMethod();
 		# Write model(s) state
-		foreach ($serviceManager->getModels() as $model) {
-			# Write model state
-			$model->writeState();
+		foreach ($serviceManager->getModels() as $moduleModels) {
+			foreach ($moduleModels as $model) {
+				# Write model state
+				$model->writeState();
+			}
 		}
 		$this->dispatched();
 		# Creating responder
@@ -76,9 +78,10 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* put your comment there...
 	* 
 	* @param mixed $name
+	* @param mixed $module
 	*/
-	public function & getModel($name = null) {
-		return $this->mvcServiceManager()->getModel($name);
+	public function & getModel($name = null, $module = null) {
+		return $this->mvcServiceManager()->getModel($name, $module);
 	}
 
 	/**

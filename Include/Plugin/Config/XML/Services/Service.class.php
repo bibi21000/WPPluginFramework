@@ -8,6 +8,9 @@ namespace WPPFW\Plugin\Config\XML\Services;
 # Imports
 use WPPFW\HDT\XML\XMLWriterPrototype;
 
+# Class Name Helper
+use WPPFW\Obj\ClassName;
+
 /**
 * 
 */
@@ -42,7 +45,8 @@ class ServicePrototype extends XMLWriterPrototype {
 		# Add class namespace
 		$attributesArray['serviceObjectClass'] = $this->getNamespace() . '\\' . $attributesArray['serviceObjectClass'];
 		# Set service front namespace
-		$attributesArray['serviceFront'] = dirname($attributesArray['serviceObjectClass']) . "\\{$attributesArray['serviceFront']}";
+		$ServiceObjectClassName = new ClassName($attributesArray['serviceObjectClass']);
+		$attributesArray['serviceFront'] = "{$ServiceObjectClassName->getNamespace()}\\{$attributesArray['serviceFront']}";
 		# Writing attributes as array elements
 		$result = array_merge($result, $attributesArray);
 		# Add to services list

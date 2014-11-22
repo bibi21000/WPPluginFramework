@@ -34,6 +34,7 @@ abstract class MVCComponenetsLayer implements IMVCComponentsLayer {
 	/**
 	* put your comment there...
 	* 
+	* @return \WPPFW\MVC\MVCDispatcher
 	*/
 	protected function & mvcServiceManager() {
 		return $this->serviceManager;

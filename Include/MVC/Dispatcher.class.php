@@ -157,22 +157,27 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	public function & getForm($name = null) {
 		
 	}
-
+	
 	/**
 	* put your comment there...
 	* 
 	* @param mixed $name
+	* @param mixed $module
 	*/
-	public function & getModel($name = null) {
+	public function & getModel($name = null, $module = null) {
 		# Init vars
 		$target =& $this->target();
+		# Set modele if not set
+		if (!$module) {
+			$module = $target->getModule();
+		}
 		# Use Controller Name for model until another model
 		# is being requested
 		if (!$name) {
 			$name = $target->getController();
 		}
 		# Creating Model object if not already created
-		if (!isset($this->models[$name])) {
+		if (!isset($this->models[$module][$name])) {
 			# Initialize vars
 			$structure =& $this->structure();
 			$namespace =& $structure->getRootNS();
@@ -180,14 +185,14 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 			$modelClass[] = '';
 			$modelClass[] = $namespace->getNamespace();
 			$modelClass[] = $structure->getModule();
-			$modelClass[] = $target->getModule();
+			$modelClass[] = $module;
 			$modelClass[] = $structure->getModel();
 			$modelClass[] = implode('', array($name, $structure->getModelClassId()));
 			# Getting model instance.
-			$this->models[$name] = \WPPFW\MVC\Model\ModelBase::getInstance(implode('\\', $modelClass), $this);
+			$this->models[$module][$name] = \WPPFW\MVC\Model\ModelBase::getInstance(implode('\\', $modelClass), $this);
 		}
 		# Return model
-		return $this->models[$name];
+		return $this->models[$module][$name];
 	}
 
 	/**

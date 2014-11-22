@@ -7,6 +7,7 @@ namespace WPPFW\MVC\Model\State;
 
 # Imports
 use WPPFW\Obj\IFactory;
+use WPPFW\Obj\ClassName;
 
 /**
 * 
@@ -59,8 +60,10 @@ abstract class WPOptionsModelState implements IModelStateAdapter {
 		# Init vars
 		$this->factory =& $factory;
 		$this->modelClass =& $modelClass;
+		# model class name components
+		$modelClassNameParser = new ClassName($modelClass);
 		# Standard var name without any side association!
-		$this->standardVarName = 'model-state_' . strtolower(basename(str_replace('_', '\\', $modelClass)));
+		$this->standardVarName = 'model-state_' . strtolower($modelClassNameParser->getName());
 		# Getting Wordpress options adapter
 		$this->wpOptionsAdapter =& $factory->get('WPPFW\Database\Wordpress\WordpressOptions');
 		# Get state var implemented by the model

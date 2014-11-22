@@ -37,6 +37,16 @@ class FormListField extends FormFieldsList {
 	/**
 	* put your comment there...
 	* 
+	* @param mixed $name
+	* @return IField
+	*/
+	public function & get($name) {
+		return $this->fields[$name];
+	}
+
+	/**
+	* put your comment there...
+	* 
 	* @param mixed $value
 	*/
 	public function & setValue($values) {

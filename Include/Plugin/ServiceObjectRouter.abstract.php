@@ -133,6 +133,14 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	* put your comment there...
 	* 
 	*/
+	public function getRouteParams() {
+		return $this->getServiceObject()->getRouteParams();
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & getServiceObject() {
 		return $this->serviceObject;
 	}
@@ -186,7 +194,7 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	* 
 	* @param mixed $action
 	*/
-	public function routeAction($action) {
+	public function routeAction($action = null) {
 		# Get params object copy.
 		$target = clone $this->emptyTarget;
 		# Change action

@@ -27,6 +27,13 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
+	* @var mixed
+	*/
+	private $directory;
+	
+	/**
+	* put your comment there...
+	* 
 	* @var Obj\Factory
 	*/
 	protected $factory;
@@ -36,7 +43,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* 
 	* @var mixed
 	*/
-	protected $file;
+	private $file;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	private $fileName;
 	
 	/**
 	* put your comment there...
@@ -50,7 +64,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* 
 	* @var mixed
 	*/
-	protected $namespace;
+	private $name;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
+	private $namespace;
 	
 	/**
 	* put your comment there...
@@ -64,7 +85,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* 
 	* @var mixed
 	*/
-	protected $url;
+	private $url;
 	
 	/**
 	* put your comment there...
@@ -78,6 +99,9 @@ abstract class PluginBase implements IServiceFrontFactory {
 		# Initialize
 		$pluginClass = get_class($this);
 		$this->file =& $file;
+		$this->fileName = basename($this->file);
+		$this->directory = dirname($file);
+		$this->name = basename($this->directory);
 		$this->config =& $config;
 		# getting namespace
 		$pluginClassComponents = explode('\\', $pluginClass);
@@ -87,9 +111,12 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$this->pluginConfig =& $config->getPlugin();
 		# Load Plugin Factory
 		$this->loadFactory();
-		# Push Plugin instance into factory
+		# Push GENARIC/ASBTRACTED Plugin instance into factory to 
+		# be used by the Framework
 		$factory =& $this->factory();
 		$factory->setNamedInstance(__CLASS__, $this);
+		# Push Plugin class
+		$factory->setNamedInstance(get_class($this), $this);
 	}
 
 	/**
@@ -178,10 +205,34 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* put your comment there...
 	* 
 	*/
+	public function getDirectory() {
+		return $this->directory;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function getFile() {
 		return $this->file;
 	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getFileName() {
+		return $this->fileName;
+	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getName() {
+		return $this->name;
+	}
+
 	/**
 	* put your comment there...
 	* 

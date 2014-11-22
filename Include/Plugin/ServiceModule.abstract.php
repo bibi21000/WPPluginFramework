@@ -9,6 +9,9 @@ namespace WPPFW\Services;
 use WPPFW\Plugin\PluginBase;
 use WPPFW\Services\IService;
 
+# Class Name Helper
+use WPPFW\Obj\ClassName;
+
 /**
 * 
 */
@@ -39,9 +42,11 @@ abstract class ServiceModule implements IService {
 		$this->plugin =& $plugin;
 		# Initialize services
 		$this->initializeServices($plugin, $this->services);
+		# Service class name components
+		$serviceClassName = new ClassName(get_class($this));
 		# Push Service module into Plugin Factory
 		$factory =& $plugin->factory();
-		$factory->setNamedInstance(basename(str_replace('_', '\\', get_class($this))), $this);
+		$factory->setNamedInstance($serviceClassName->getName(), $this);
 	}
 
 	/**
