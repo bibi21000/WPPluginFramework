@@ -35,7 +35,7 @@ abstract class FormFieldsList extends FormFieldBase {
 	* put your comment there...
 	* 
 	*/
-	protected function & getFields() {
+	public function & getFields() {
 		return $this->fields;
 	}
 	

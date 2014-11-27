@@ -8,6 +8,7 @@ namespace WPPFW\Services\Dashboard\Ajax;
 # Imports
 use WPPFW\Services\ServiceObject;
 use WPPFW\Services\IReachableServiceObject;
+use WPPFW\Http\Url;
 
 /**
 * 
@@ -54,8 +55,16 @@ class AjaxAccessPoint extends ServiceObject implements IReachableServiceObject {
 	* put your comment there...
 	* 
 	*/
+	public function getRequestActionName() {
+		return "wp_ajax_{$this->getName()}";
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function getUrl() {
-		return 'xx';
+		return new Url(home_url('wp-admin/admin-ajax.php'), array('action' => $this->getRequestActionName()));
 	}
 
 	/**

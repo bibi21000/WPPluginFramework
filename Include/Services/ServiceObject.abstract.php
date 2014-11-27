@@ -31,7 +31,10 @@ abstract class ServiceObject {
 	* @return IService
 	*/
 	public function & bind(IService & $service) {
-		return $this->service;
+		# Set
+		$this->service =& $service;
+		# Chain
+		return $this;
 	}
 
 	/**

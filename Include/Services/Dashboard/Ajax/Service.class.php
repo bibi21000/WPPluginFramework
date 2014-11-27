@@ -41,7 +41,7 @@ class AjaxService extends ServiceBase {
 			# Bind Service object
 			$this->bindServiceObject($accessPoint);
 			# Ajax hook action name
-			$hookName = "wp_ajax_{$accessPoint->getName()}";
+			$hookName = $accessPoint->getRequestActionName();
 			# Add hook map.
 			$this->hoohMap[$hookName] =& $accessPoints[$index];
 			# Bind
