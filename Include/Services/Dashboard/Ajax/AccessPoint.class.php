@@ -64,7 +64,7 @@ class AjaxAccessPoint extends ServiceObject implements IReachableServiceObject {
 	* 
 	*/
 	public function getUrl() {
-		return new Url(home_url('wp-admin/admin-ajax.php'), array('action' => $this->getRequestActionName()));
+		return new Url(home_url('wp-admin/admin-ajax.php'), array('action' => $this->getName()));
 	}
 
 	/**

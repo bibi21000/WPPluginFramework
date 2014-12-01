@@ -48,7 +48,7 @@ class MVCRequestInputFrontProxy extends ServiceFrontProxy {
 			$defNames['format']
 			);
 		# Reading inputs
-		$inputsReader = new MVC\MVCRequestParamsRouter($namespace->getNamespace(), $inputs->get(), $names, $params);
+		$inputsReader = new MVC\MVCRequestParamsRouter($namespace->getNamespace(), $inputs->request(), $names, $params);
 		# Get target
 		$target = $inputsReader->getOutParams();
 		# Send object back

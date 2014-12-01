@@ -61,6 +61,14 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* put your comment there...
 	* 
 	*/
+	public function & httpResponse() {
+		return $this->mvcServiceManager()->httpResponse();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & input() {
 		return $this->mvcServiceManager()->input();
 	}

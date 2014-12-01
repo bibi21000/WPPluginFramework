@@ -11,6 +11,7 @@ use WPPFW\Services\IServiceFrontFactory;
 use WPPFW\MVC\IDispatcher;
 use WPPFW\Services\ServiceObject;
 use WPPFW\Services\ServiceBase;
+use WPPFW\Http\HTTPResponse;
 
 /**
 * 
@@ -83,6 +84,13 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
+	* @var \HttpResponse
+	*/
+	protected $response;
+	
+	/**
+	* put your comment there...
+	* 
 	* @var mixed
 	*/
 	private $url;
@@ -107,6 +115,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$pluginClassComponents = explode('\\', $pluginClass);
 		$this->namespace = new Obj\PHPNamespace(reset($pluginClassComponents), dirname($file));
 		$this->inputs = new Request($_GET, $_POST, $_REQUEST);
+		$this->response = new HTTPResponse();
 		$this->url = plugin_dir_url($file);
 		$this->pluginConfig =& $config->getPlugin();
 		# Load Plugin Factory
@@ -146,6 +155,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 		$serviceFront = new $serviceFrontClass(
 			$this->factory(),
 			$this->input(),
+			$this->getHTTPResponse(),
 			$frontProxy->getStructure(), 
 			$frontProxy->getTarget(),
 			$frontProxy->getNames(),
@@ -225,6 +235,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 		return $this->fileName;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & getHTTPResponse() {
+		return $this->response;
+	}
+
 	/**
 	* put your comment there...
 	* 

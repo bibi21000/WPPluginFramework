@@ -7,6 +7,7 @@ namespace WPPFW\MVC;
 
 # Imports
 use WPPFW\Plugin\Request as RequestInput;
+use WPPFW\Http\HTTPResponse;
 use WPPFW\Obj\IFactory;
 
 /**
@@ -52,6 +53,13 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	/**
 	* put your comment there...
 	* 
+	* @var \HttpResponse
+	*/
+	protected $response;
+	
+	/**
+	* put your comment there...
+	* 
 	* @var Router
 	*/
 	protected $router;
@@ -75,14 +83,16 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	* 
 	* @param IFactory $factory
 	* @param {IFactory|RequestInput} $input
-	* @param {IFactory|MVCStructure|RequestInput} $structure
-	* @param {IFactory|MVCParams|MVCStructure|RequestInput} $target
-	* @param {IFactory|MVCParams|MVCParams|MVCStructure|RequestInput} $names
-	* @param mixed $router
-	* @return MVCDispatcher
+	* @param {HTTPResponse|IFactory|RequestInput} $response
+	* @param {HTTPResponse|IFactory|MVCStructure|RequestInput} $structure
+	* @param {HTTPResponse|IFactory|MVCParams|MVCStructure|RequestInput} $target
+	* @param {HTTPResponse|IFactory|MVCParams|MVCParams|MVCStructure|RequestInput} $names
+	* @param {HTTPResponse|IFactory|IMVCRouter|MVCParams|MVCParams|MVCStructure|RequestInput} $router
+	* @return {MVCDispatcher|HTTPResponse|IFactory|IMVCRouter|MVCParams|MVCParams|MVCStructure|RequestInput}
 	*/
 	public function __construct(IFactory & $factory, 
 															RequestInput & $input, 
+															HTTPResponse & $response,
 															MVCStructure & $structure, 
 															MVCParams & $target,
 															MVCParams & $names,
@@ -90,6 +100,7 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 		# Unit intialization
 		$this->factory =& $factory;
 		$this->input =& $input;
+		$this->response =& $response;
 		$this->structure =& $structure;
 		$this->target =& $target;
 		$this->names =& $names;
@@ -123,14 +134,6 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 		$responder =& $this->controller->dispatch();
 		# Return responder
 		return $responder;
-	}
-
-	/**
-	* put your comment there...
-	* 
-	*/
-	public function & input() {
-		return $this->input;
 	}
 
 	/**
@@ -206,10 +209,34 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 	/**
 	* put your comment there...
 	* 
+	*/
+	public function & getResponse() {
+		return $this->response;
+	}
+	
+	/**
+	* put your comment there...
+	* 
 	* @param mixed $name
 	*/
 	public function & getTable($name = null) {
 		
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & httpResponse() {
+		return $this->response;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function & input() {
+		return $this->input;
 	}
 
 	/**

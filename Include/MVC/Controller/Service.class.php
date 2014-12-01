@@ -21,8 +21,8 @@ class ServiceController extends Base {
 	*/
 	public function getResponder(& $result) {
 		# Initialize
-		$structure =& $this->getStructure();
-		$target =& $this->getTarget();
+		$structure =& $this->mvcStructure();
+		$target =& $this->mvcTarget();
 		# Getting responder class components
 		$responderClass[] = '';
 		$responderClass[] = $structure->getRootNS()->getNamespace();
@@ -33,7 +33,7 @@ class ServiceController extends Base {
 		# Responder class
 		$responderClass = implode('\\', $responderClass);
 		# Creating Responder
-		$responder = new $responderClass($result);
+		$responder = new $responderClass($this->httpResponse(), $result);
 		# Returning Responder
 		return $responder;
 	}

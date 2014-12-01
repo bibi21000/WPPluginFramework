@@ -8,6 +8,7 @@ namespace WPPFW\MVC\Model;
 # Imports
 use WPPFW\MVC;
 use WPPFW\Database\Wordpress\WPOptionVariable;
+use WPPFW\Forms\Form;
 
 /**
 * 
@@ -271,6 +272,19 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 		$stateAdapter->write($stateVars);
 		# Chain
 		return $this;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	* @param Form $form
+	*/
+	public function validate(Form & $form) {
+		# Get all form fields
+		$fields = $form->getFields();
+		# Recusively validate all fields
+		
+		return true;
 	}
 
 }
