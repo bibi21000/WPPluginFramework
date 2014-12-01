@@ -2,7 +2,7 @@
 	"name" : "xptrdev/WPPluginFramework",
   "type": "library",
   "description": "Wordpress Plugin Framework",
-  "homepage": "http://www.xptrdev.com/frameworks/wordpress/plugins",
+  "homepage": "https://github.com/xptrdev/WPPluginFramework",
   "license": "LGPL",
   "authors": [
       {
