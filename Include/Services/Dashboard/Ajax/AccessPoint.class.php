@@ -42,7 +42,15 @@ class AjaxAccessPoint extends ServiceObject implements IReachableServiceObject {
 		# Chain
 		return $this;
 	}
-	
+
+	/**
+	* put your comment there...
+	* 	
+	*/
+	public function getActionUrl() {
+		return home_url('wp-admin/admin-ajax.php');
+	}
+
 	/**
 	* put your comment there...
 	* 
@@ -63,8 +71,16 @@ class AjaxAccessPoint extends ServiceObject implements IReachableServiceObject {
 	* put your comment there...
 	* 
 	*/
+	public function getRouteParams() {
+		return array('action' => $this->getName());
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function getUrl() {
-		return new Url(home_url('wp-admin/admin-ajax.php'), array('action' => $this->getName()));
+		return new Url($this->getActionUrl(), $this->getRouteParams());
 	}
 
 	/**

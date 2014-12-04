@@ -17,6 +17,17 @@ abstract class Base extends MVC\MVCComponenetsLayer implements IController {
 	* put your comment there...
 	* 
 	*/
+	public function createSecurityToken() {
+		# Get Plugin
+		$plugin =& $this->factory()->get('WPPFW\Plugin\PluginBase');
+		# Create Token
+		return $plugin->createSecurityToken();
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	public function & dispatch() {
 		# Initialize
 		$target =& $this->mvcTarget();

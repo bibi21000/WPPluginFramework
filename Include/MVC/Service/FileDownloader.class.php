@@ -12,7 +12,7 @@ use WPPFW\Http\HTTPResponse;
 /**
 * 
 */
-class JSONEncoder extends MVCResponder {
+class FileDownloader extends MVCResponder {
 	
 	/**
 	* put your comment there...
@@ -20,7 +20,8 @@ class JSONEncoder extends MVCResponder {
 	*/
 	protected function initialize() {
 		# Set http response header
-		$this->getHttpResponse()->setContentType('text/json');
+		$httpResponse =& $this->getHttpResponse();
+		/// header("Content-Desposition");
 	}
 
 	/**
@@ -28,7 +29,7 @@ class JSONEncoder extends MVCResponder {
 	* 
 	*/
 	public function __toString() {
-		return json_encode($this->getResult());
+		return $this->getResult();
 	}
 	
 }

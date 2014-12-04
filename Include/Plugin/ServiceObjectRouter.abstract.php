@@ -128,6 +128,14 @@ abstract class ServiceObjectRouterBase extends MVC\RouterBase implements MVC\IMV
 	public function homeUrl() {
 		return $this->getServiceObject()->getUrl();
 	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getActionUrl() {
+		return $this->getServiceObject()->getActionUrl();
+	}
 	
 	/**
 	* put your comment there...

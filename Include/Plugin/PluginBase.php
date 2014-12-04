@@ -131,6 +131,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 	/**
 	* put your comment there...
 	* 
+	*/
+	public function createSecurityToken() {
+		return wp_create_nonce();
+	}
+
+	/**
+	* put your comment there...
+	* 
 	* @param ServiceObject $serviceObject
 	* @return ServiceObject
 	*/
