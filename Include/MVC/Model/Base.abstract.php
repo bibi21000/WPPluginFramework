@@ -274,18 +274,5 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 		return $this;
 	}
 
-	/**
-	* put your comment there...
-	* 
-	* @param Form $form
-	*/
-	public function validate(Form & $form) {
-		# Get all form fields
-		$fields = $form->getFields();
-		# Recusively validate all fields
-		
-		return true;
-	}
-
 }
 

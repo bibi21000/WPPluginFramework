@@ -52,14 +52,20 @@ abstract class FormFieldBase implements IField {
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $name
-	* @param IType $type
-	* @return {FormField|IType}
+	* @var mixed
 	*/
-	public function __construct($name, IType $type) {
+	protected $validated;
+	
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $name
+	* @return FormFieldBase
+	*/
+	public function __construct($name) {
 		# Initialize
 		$this->name =& $name;
-		$this->type =& $type;
+		$this->type = $this->getType();
 	}
 	
 	/**
@@ -77,6 +83,12 @@ abstract class FormFieldBase implements IField {
 	public function getName() {
 		return $this->name;
 	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected abstract function getType();
 
 	/**
 	* put your comment there...

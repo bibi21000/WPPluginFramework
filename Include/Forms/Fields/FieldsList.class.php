@@ -23,13 +23,9 @@ abstract class FormFieldsList extends FormFieldBase {
 	/**
 	* put your comment there...
 	* 
-	* @param mixed $name
-	* @return FormIntegerField
+	* @var mixed
 	*/
-	public function __construct($name) {
-		# Form field object
-		parent::__construct($name, new TypeArray());
-	}
+	protected $validated;
 
 	/**
 	* put your comment there...
@@ -39,6 +35,14 @@ abstract class FormFieldsList extends FormFieldBase {
 		return $this->fields;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	*/
+	protected function getType() {
+		return new TypeArray();
+	}
+
 	/**
 	* 
 	*/
@@ -62,13 +66,17 @@ abstract class FormFieldsList extends FormFieldBase {
 	public function & validate() {
 		# INitialize
 		$fields =& $this->getFields();
+		$this->validated = true;
 		# Validate fields
 		foreach ($fields as $field) {
-			# Validate field
-			$field->validate();
+			# Any soingle invalid field would cause to return invalid
+			if (!$field->validate() && $this->validated) {
+				# Mark as invalie
+				$this->validated = false;
+			}
 		}
-		# Chain
-		return $this;
+		# Return vaidation state
+		return $this->validated;
 	}
 
 }
