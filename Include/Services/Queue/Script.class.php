@@ -34,9 +34,9 @@ abstract class ScriptResource extends Resource {
 	* @param mixed $location
 	* @return Script
 	*/
-	public function __construct($name, $url, $version = null, $location) {
+	public function __construct($name, $url, $version = null, $location = null) {
 		# Resource object
-		parent::__construct($name, $url, $version, $location);
+		parent::__construct($name, $url, $version);
 		# Initialize
 		$this->location =& $location;
 	}

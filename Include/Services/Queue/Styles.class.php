@@ -8,12 +8,7 @@ namespace WPPFW\Services\Queue;
 /**
 * 
 */
-abstract class ScriptsQueue extends Resources {
-	
-	/**
-	* 
-	*/
-	const JQUERY = 'jquery';
+abstract class StylesQueue extends Resources {
 	
 	/**
 	* 
@@ -25,9 +20,9 @@ abstract class ScriptsQueue extends Resources {
 	* 
 	* @param ScriptResource $script
 	*/
-	public function & add(ScriptResource & $script) {
+	public function & add(StyleResource & $style) {
 		# Add to queues list
-		return $this->addStore($script);
+		return $this->addStore($style);
 	}
 
 	/**
@@ -35,9 +30,9 @@ abstract class ScriptsQueue extends Resources {
 	* 
 	* @param mixed $object
 	*/
-	protected function wpEnqueue($name) {
+	protected function wpEnqueue($name) {	
 		# Equeue Wordpress script
-		wp_enqueue_script($name);
+		wp_enqueue_style($name);
 	}
 	
 	/**
@@ -52,14 +47,14 @@ abstract class ScriptsQueue extends Resources {
 		* 
 		* @var ScriptResource
 		*/
-		$script =& $object;
+		$style =& $object;
 		# Equeue Wordpress script
-		wp_register_script(
-			$script->getName(), 
-			$script->getUrl(), 
-			$script->dependencies()->getArray(), 
-			$script->getVersion(), 
-			$script->getLocation());
+		wp_register_style(
+			$style->getName(), 
+			$style->getUrl(), 
+			$style->dependencies()->getArray(), 
+			$style->getVersion()
+			);
 	}
 
 }

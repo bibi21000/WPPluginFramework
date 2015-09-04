@@ -56,13 +56,22 @@ abstract class Resources {
 	public function _wp_enqueue() {
 		# Register all stored resources
 		$store =& $this->getStore();
-		foreach ($store as $resource) {
+		foreach ($store as $resource) 
+		{
+			
 			# Register by model
 			$this->wpRegister($resource);
+			
+			# Add to queue
+			$this->queue[] = $resource->getName();
+			
 		}
+		
 		# Send all queued resources to queue using child model
 		$queue =& $this->getQueue();
-		foreach ($queue as $name) {
+		
+		foreach ($queue as $name) 
+		{
 			# Enqueue by model
 			$this->wpEnqueue($name);
 		}
