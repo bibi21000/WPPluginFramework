@@ -16,6 +16,11 @@ abstract class StylesQueue extends Resources {
 	const JQUERY_UI_TABS = 'jquery-ui-tabs';
 	
 	/**
+	* 
+	*/
+	const THICK_BOX = 'thickbox';
+	
+	/**
 	* put your comment there...
 	* 
 	* @param ScriptResource $script
