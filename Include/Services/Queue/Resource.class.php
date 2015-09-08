@@ -22,6 +22,13 @@ class Resource {
 	* 
 	* @var mixed
 	*/
+	protected $fileName;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
 	protected $name;
 	
 	/**
@@ -49,7 +56,7 @@ class Resource {
 	public function __construct($name, $url, $version = null)  {
 		# Initialize
 		$this->name =& $name;
-		$this->url =& $url;
+		$this->url = "{$url}/{$this->fileName}";
 		$this->version =& $version;
 		$this->dependencies = new \WPPFW\Collection\DataAccess();
 	}
