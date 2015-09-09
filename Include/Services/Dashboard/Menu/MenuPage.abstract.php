@@ -133,7 +133,7 @@ implements IMenuPage, IReachableServiceObject {
 	* 
 	*/
 	public function getRouteParams() {
-		return array('page' => $this->getSlug());
+		return array( 'page' => $this->getSlug() );
 	}
 
 	/**
@@ -158,7 +158,7 @@ implements IMenuPage, IReachableServiceObject {
   */
   public function getUrl() {
 		# Return URL to service object
-		return new Url(home_url('wp-admin/admin.php'), $this->getRouteParams());
+		return new Url( admin_url( 'admin.php' ) , $this->getRouteParams() );
   }
 
 	/**
