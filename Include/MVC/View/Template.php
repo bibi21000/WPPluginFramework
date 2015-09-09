@@ -13,6 +13,13 @@ abstract class TemplateView extends Base {
 	/**
 	* put your comment there...
 	* 
+	* @var mixed
+	*/
+	protected $extraExtension;
+	
+	/**
+	* put your comment there...
+	* 
 	*/
 	public function __toString() {
 		# Return content
@@ -38,7 +45,7 @@ abstract class TemplateView extends Base {
 		$layoutPath[] = $structure->getView();
 		$layoutPath[] = $target->getView();
 		$layoutPath[] = 'Templates';
-		$layoutPath[] = "{$layoutFile}.{$layoutExtension}"; # Layout file
+		$layoutPath[] = "{$layoutFile}.{$layoutExtension}{$this->extraExtension}"; # Layout file
 		# Layout file path
 		$layoutPath = implode(DIRECTORY_SEPARATOR, $layoutPath);
 		# Return path
