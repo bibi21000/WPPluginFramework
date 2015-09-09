@@ -16,6 +16,13 @@ class MenuService extends ServiceBase {
 	/**
 	* put your comment there...
 	* 
+	* @var mixed
+	*/
+	protected $hookName = 'admin_menu';
+	
+	/**
+	* put your comment there...
+	* 
 	*/
 	public function _wp_addMenu() {
 		# Initialize
@@ -56,15 +63,31 @@ class MenuService extends ServiceBase {
 		$this->dispatch();
   }
 
+  /**
+  * put your comment there...
+  * 
+  * @param mixed $hook
+  */
+  public function & setHook( $hook )
+  {
+		
+		$this->hookName = $hook;
+		
+		return $this;
+  }
+  
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function & start() {
+	public function & start() 
+	{
+		
 		# Start service
-		add_action('admin_menu', $this->getHookCallback('addMenu'));
-		# Chains
-		return $this;
+		add_action( $this->hookName , $this->getHookCallback( 'addMenu' ) );
+		
+		
+		return $this;		
 	}
 	
 }  # End class
