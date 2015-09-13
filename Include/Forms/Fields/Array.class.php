@@ -35,10 +35,11 @@ class FormArrayField extends FormFieldsList {
 	* put your comment there...
 	* 
 	*/
-	public function & getFieldPrototype() {
+	public function getFieldPrototype()
+	{
 		return $this->fieldPrototype;
 	}
-	
+
 	/**
 	* put your comment there...
 	* 
@@ -46,7 +47,7 @@ class FormArrayField extends FormFieldsList {
 	*/
 	public function & setValue($values) {
 		# Cast value
-		$values = $this->type()->cast($values);
+		$values = $this->type()->cast( $values );
 		# Reset fields
 		$this->fields = array();
 		# Create fields

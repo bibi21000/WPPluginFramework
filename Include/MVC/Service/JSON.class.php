@@ -22,13 +22,13 @@ class JSONEncoder extends MVCResponder {
 		# Set http response header
 		$this->getHttpResponse()->setContentType('text/json');
 	}
-
+	
 	/**
 	* put your comment there...
 	* 
 	*/
-	public function __toString() {
-		return json_encode($this->getResult());
+	public function render()
+	{
+		return json_encode( $this->getResult() );
 	}
-	
 }

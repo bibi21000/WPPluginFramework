@@ -40,9 +40,26 @@ abstract class FormFieldsList extends FormFieldBase {
 	* 
 	*/
 	protected function getType() {
-		return new TypeArray();
+		return new TypeArray( true );
 	}
 
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getRules()
+	{
+		
+		$rules = array();
+		
+		foreach ( $this->getFields() as $field )
+		{
+			$rules = array_merge( $rules, $field->getRules() );
+		}
+		
+		return $rules;
+	}
+	
 	/**
 	* 
 	*/
@@ -57,6 +74,15 @@ abstract class FormFieldsList extends FormFieldBase {
 		}
 		# Return value
 		return $value;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function hasRules()
+	{
+		return ! empty( $this->getRules() );
 	}
 
 	/**

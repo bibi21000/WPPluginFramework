@@ -62,7 +62,7 @@ abstract class TemplateView extends Base {
 	* put your comment there...
 	* 
 	*/
-	protected function render() {
+	public function render() {
 		# Pre redner 
 		$this->preRender();
     # Get template file path

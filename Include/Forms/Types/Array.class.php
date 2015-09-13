@@ -15,9 +15,9 @@ class TypeArray extends TypeBase {
 	* 
 	* @param mixed $value
 	*/
-	protected function typeCast($value) {
+	protected function typeCast( $value ) {
 		# Cast
-		return (array) $value;
+		return ( $value ? $value : array() );
 	}
 	
 }

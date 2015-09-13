@@ -31,11 +31,14 @@ abstract class TypeBase implements IType {
 	/**
 	* 
 	*/
-	public function cast($value) {
+	public function cast($value) 
+	{
 		# Dont cast uf no null cast and the value is null
-		if ($this->nullCast || ($value !== null)) {
-			$value = $this->typeCast($value);
+		if ( $this->nullCast || ( $value !== null ) ) 
+		{
+			$value = $this->typeCast( $value );
 		}
+		
 		return $value;
 	}
 	
