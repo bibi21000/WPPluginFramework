@@ -167,7 +167,7 @@ abstract class ServiceBase implements IService {
 	* 
 	*/
 	public function response() {
-		echo $this->getResponder()->render();
+		echo $this->getResponder();
 	}
 
 }

@@ -9,10 +9,10 @@ namespace WPPFW\MVC;
 * 
 */
 interface IMVCResponder {
-
+	
 	/**
 	* 
 	*/
-	public function render();
-	
+	public function __toString();
+
 }
