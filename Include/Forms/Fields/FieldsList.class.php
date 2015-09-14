@@ -82,7 +82,10 @@ abstract class FormFieldsList extends FormFieldBase {
 	*/
 	public function hasRules()
 	{
-		return ! empty( $this->getRules() );
+		
+		$rules = $this->getRules();
+		
+		return ! empty( $rules );
 	}
 
 	/**
