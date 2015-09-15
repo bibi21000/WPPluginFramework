@@ -252,6 +252,22 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	}
 	
 	/**
+	* STILL NOT SUPPORTING $TYPE but will do
+	* 
+	* @param mixed $message
+	* @param mixed $code
+	*/
+	public function & setMessage($message, $type = null) 
+	{
+
+		$this->errorMessages[] = $message;
+		
+		$this->errorCodes[] = $code;
+		
+		return $this;
+	}
+
+	/**
 	* put your comment there...
 	* 
 	*/
