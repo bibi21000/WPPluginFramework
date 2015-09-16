@@ -250,14 +250,16 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	public function & router() {
 		return $this->mvcServiceManager()->router();
 	}
-	
+
 	/**
-	* STILL NOT SUPPORTING $TYPE but will do
+	* put your comment there...
 	* 
 	* @param mixed $message
+	* @param mixed $type
 	* @param mixed $code
+	* @return ModelBase
 	*/
-	public function & setMessage($message, $type = null) 
+	public function & setMessage( $message, $type = null, $code = null ) 
 	{
 
 		$this->errorMessages[] = $message;
