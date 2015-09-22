@@ -30,6 +30,30 @@ abstract class TemplateView extends Base {
 	* put your comment there...
 	* 
 	*/
+	public function getPath()
+	{
+		# Initialize
+		$target =& $this->mvcTarget();
+		$structure =& $this->mvcStructure();
+		$namespace =& $structure->getRootNS();
+		
+		# Path compoennet
+		$path[] = $namespace->getPath();
+		$path[] = $structure->getModule();
+		$path[] = $target->getModule();
+		$path[] = $structure->getView();
+		$path[] = $target->getView();
+		
+		# Layout file path
+		$path = implode( DIRECTORY_SEPARATOR, $path );
+		
+		return $path;
+	}
+
+	/**
+	* put your comment there...
+	* 
+	*/
 	protected function getTemplateFilePath() {
 		# Initialize
 		$target =& $this->mvcTarget();
