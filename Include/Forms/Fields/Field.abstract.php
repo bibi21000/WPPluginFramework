@@ -40,6 +40,13 @@ abstract class FormFieldBase implements IField {
 	* 
 	* @var mixed
 	*/
+	protected $parent;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
 	protected $rules;
 	
 	/**
@@ -88,6 +95,40 @@ abstract class FormFieldBase implements IField {
 	* put your comment there...
 	* 
 	*/
+	public function & getParent()
+	{
+		return $this->parent;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
+	public function getPath()
+	{
+		
+		$path = array();
+		
+		$parent = $this;
+		
+		while ( $parent )
+		{
+			$path[] = $parent->getName();
+			
+			$parent = $parent->getParent();
+		}
+		
+		$path = array_reverse( $path );
+		
+		$path = implode( '/', $path );
+		
+		return $path;
+	}
+	
+	/**
+	* put your comment there...
+	* 
+	*/
 	protected abstract function getType();
 
 	/**
@@ -103,6 +144,19 @@ abstract class FormFieldBase implements IField {
 		return $this;
 	}
 	
+	/**
+	* put your comment there...
+	* 
+	* @param mixed $parent
+	*/
+	public function & setParent( $parent )
+	{
+		
+		$this->parent =& $parent;
+		
+		return $this;
+	}
+
 	/**
 	* put your comment there...
 	* 

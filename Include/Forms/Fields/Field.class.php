@@ -19,6 +19,13 @@ abstract class FormField extends FormFieldBase implements IInputField {
 	* 
 	* @var mixed
 	*/
+	protected $default;
+	
+	/**
+	* put your comment there...
+	* 
+	* @var mixed
+	*/
 	protected $rules = array();
 	
 	/**
@@ -40,18 +47,26 @@ abstract class FormField extends FormFieldBase implements IInputField {
 	* 
 	* @param mixed $name
 	* @param mixed $rules
+	* @param mixed $default
 	* @return FormField
 	*/
-	public function __construct($name, $rules = null) {
-		# Field base
+	public function __construct($name, $rules = null, $default = null) 
+	{
+		
 		parent::__construct($name);
+		
 		# Define the set of rules
-		if (is_array($rules)) {
-			foreach ($rules as $rule) {
-				# Add field rule
+		if ( is_array( $rules ) ) 
+		{
+			foreach ( $rules as $rule ) 
+			{
+				
 				$this->setRule($rule);
 			}
+			
 		}
+		
+		$this->default = $default;
 	}
 
 	/**
@@ -96,10 +111,11 @@ abstract class FormField extends FormFieldBase implements IInputField {
 	* 
 	* @param mixed $value
 	*/
-	public function & setValue($value) {
+	public function & setValue( $value ) 
+	{
 		# Cast value
-		$this->value = $this->type()->cast($value);
-		# Chain
+		$this->value = $this->type()->cast( $value ? $value : $this->default );
+		
 		return $this;
 	}
 

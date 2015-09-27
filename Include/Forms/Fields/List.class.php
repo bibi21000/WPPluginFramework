@@ -27,10 +27,15 @@ class FormListField extends FormFieldsList {
 	* 
 	* @param IField $field
 	*/
-	public function & addChain(IField & $field) {
-		# Add
+	public function & addChain(FormFieldBase & $field) 
+	{
+		
+		$field->setParent( $this );
+		
+		
 		$this->fields[$field->getName()] = $field;
-		# Return element
+		
+
 		return $this;
 	}
 
@@ -43,25 +48,30 @@ class FormListField extends FormFieldsList {
 	public function & get($name) {
 		return $this->fields[$name];
 	}
-
+	
 	/**
 	* put your comment there...
 	* 
 	* @param mixed $value
 	*/
-	public function & setValue($values) {
-		# Cast 
+	public function & setValue( $values ) 
+	{
+		
 		$values = $this->type()->cast($values);
-		# INitialize
+		
+		
 		$fields =& $this->getFields();
+		
 		# Set list values.
-		foreach ($fields as $index => $field) {
+		foreach ( $fields as $index => $field ) 
+		{
 			# Getting field value
-			$value = isset($values[$index]) ? $values[$index] : null;
+			$value = isset( $values[ $index ] ) ? $values[ $index ] : null;
+			
 			# Setting field value
-			$field->setValue($value);
+			$field->setValue( $value );
 		}
-		# Chain
+		
 		return $this;
 	}
 
