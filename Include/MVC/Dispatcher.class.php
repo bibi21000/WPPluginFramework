@@ -152,6 +152,19 @@ class MVCDispatcher implements IDispatcher, IMVCServiceManager {
 		return $this->controller;
 	}
 	
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $name
+    */
+    public function & getExtension( $name )
+    {
+        
+        $plugin =& $this->factory()->get( 'WPPFW\Plugin\PluginBase' );
+        
+        return $plugin->getExtension( $name );
+    }
+    
 	/**
 	* put your comment there...
 	* 

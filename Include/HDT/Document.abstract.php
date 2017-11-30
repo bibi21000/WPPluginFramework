@@ -41,7 +41,7 @@ abstract class HDTDocument implements IHTDDocument {
 	* put your comment there...
 	* 
 	*/
-	protected abstract function definePrototypes();
+	protected abstract function & definePrototypes();
 	
 	/**
 	* put your comment there...

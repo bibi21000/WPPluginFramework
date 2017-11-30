@@ -35,6 +35,13 @@ abstract class FormFieldBase implements IField {
 	*/
 	protected $name;
 	
+    /**
+    * put your comment there...
+    * 
+    * @var mixed
+    */
+    protected $params = array();
+    
 	/**
 	* put your comment there...
 	* 
@@ -91,6 +98,16 @@ abstract class FormFieldBase implements IField {
 		return $this->name;
 	}
 
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $name
+    */
+    public function getParam($name)
+    {
+        return isset($this->params[$name]) ? $this->params[$name] : null;
+    }
+    
 	/**
 	* put your comment there...
 	* 
@@ -144,6 +161,20 @@ abstract class FormFieldBase implements IField {
 		return $this;
 	}
 	
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $name
+    * @param mixed $value
+    */
+    public function & setParam($name, $value)
+    {
+        
+        $this->params[$name] = $value;
+        
+        return $this;
+    }
+    
 	/**
 	* put your comment there...
 	* 

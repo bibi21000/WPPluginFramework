@@ -24,7 +24,7 @@ class FormArrayField extends FormFieldsList {
 	* @param IField $fieldPrototype
 	* @return {FormArrayField|IField}
 	*/
-	public function __construct($name, IField & $fieldPrototype) {
+	public function __construct($name, IField $fieldPrototype) {
 		# Init
 		$this->fieldPrototype =& $fieldPrototype;
 		# Field base

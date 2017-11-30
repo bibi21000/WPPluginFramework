@@ -8,7 +8,7 @@ namespace WPPFW\Services;
 /**
 * 
 */
-interface IReachableServiceObject {
+interface IReachableServiceObject extends IServiceObject {
 	
 	/**
 	* 

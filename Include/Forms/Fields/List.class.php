@@ -15,7 +15,7 @@ class FormListField extends FormFieldsList {
 	* 
 	* @param IField $field
 	*/
-	public function & add(IField & $field) {
+	public function & add(IField $field) {
 		# Add
 		$this->addChain($field);
 		# Return element
@@ -27,7 +27,7 @@ class FormListField extends FormFieldsList {
 	* 
 	* @param IField $field
 	*/
-	public function & addChain(FormFieldBase & $field) 
+	public function & addChain(FormFieldBase $field) 
 	{
 		
 		$field->setParent( $this );
@@ -45,8 +45,13 @@ class FormListField extends FormFieldsList {
 	* @param mixed $name
 	* @return IField
 	*/
-	public function & get($name) {
-		return $this->fields[$name];
+	public function & get($name)
+    {
+		$field =    isset($this->fields[$name]) ?
+                    $this->fields[$name] :
+                    null;
+        
+        return $field;
 	}
 	
 	/**

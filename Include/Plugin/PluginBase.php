@@ -32,6 +32,13 @@ abstract class PluginBase implements IServiceFrontFactory {
 	*/
 	private $directory;
 	
+    /**
+    * put your comment there...
+    * 
+    * @var mixed
+    */
+    private $extensions;
+    
 	/**
 	* put your comment there...
 	* 
@@ -87,14 +94,14 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* @var \HttpResponse
 	*/
 	protected $response;
-	
+    
 	/**
 	* put your comment there...
 	* 
 	* @var mixed
 	*/
 	private $url;
-	
+    
 	/**
 	* put your comment there...
 	* 
@@ -142,22 +149,33 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* @param ServiceObject $serviceObject
 	* @return ServiceObject
 	*/
-	public function & createServiceFront(ServiceObject & $serviceObject) {
+	public function & createServiceFront(ServiceObject & $serviceObject) 
+    {
+        # Allow Plugin to pre-load components (e.g localization)
+        $this->onCreateServiceFront();
+        
 		# Initialize
 		$config =& $this->getConfig();
 		$proxy =& $serviceObject->getProxy();
+        
 		# Load MVC and Service objects
 		$this->loadMVCLayerConfiguration();
+        
 		# Get service configuration
 		$serviceConfig =& $config->getService($serviceObject);
+        
 		# Get Front Proxy class
 		$frontProxyClass = $serviceConfig['proxy']['frontClass'];
+        
 		# Create Front Proxy object
 		$frontProxy = new $frontProxyClass();
+        
 		# Getting Service MVC configuration (target, sructure, etc...)
 		$frontProxy->proxy($this, $serviceConfig);
+        
 		# Create Service Object Router.
 		$router =& $this->createServiceObjectRouter($serviceObject, $serviceConfig);
+        
 		# Create Service Front object
 		$serviceFrontClass = $serviceConfig['serviceFront'];
 		$serviceFront = new $serviceFrontClass(
@@ -226,7 +244,20 @@ abstract class PluginBase implements IServiceFrontFactory {
 	public function getDirectory() {
 		return $this->directory;
 	}
-
+    
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $name
+    */
+    public function & getExtension( $name )
+    {
+        
+        $extension = isset( $this->extensions ) ? $this->extensions[ $name ] : null;
+        
+        return $extension;
+    }
+    
 	/**
 	* put your comment there...
 	* 
@@ -310,7 +341,7 @@ abstract class PluginBase implements IServiceFrontFactory {
 	* put your comment there...
 	* 
 	*/
-	protected function loadMVCLayerConfiguration() {
+	public function loadMVCLayerConfiguration() {
 		# INitialize vars
 		$config =& $this->getConfig();
 		# Load MVC Configuration objects
@@ -319,4 +350,23 @@ abstract class PluginBase implements IServiceFrontFactory {
 					 ->loadServices();
 	}
 
+    /**
+    * put your comment there...
+    * 
+    */
+    protected function onCreateServiceFront() {}
+    
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $name
+    * @param mixed $extension
+    */
+    protected function setExtension( $name, $extension )
+    {
+        
+        $this->extensions[ $name ] = $extension;
+        
+        return $this;
+    }
 }

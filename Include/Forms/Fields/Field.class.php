@@ -42,15 +42,16 @@ abstract class FormField extends FormFieldBase implements IInputField {
 	*/
 	protected $value;
 
-	/**
-	* put your comment there...
-	* 
-	* @param mixed $name
-	* @param mixed $rules
-	* @param mixed $default
-	* @return FormField
-	*/
-	public function __construct($name, $rules = null, $default = null) 
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $name
+    * @param mixed $rules
+    * @param mixed $default
+    * @param mixed $value
+    * @return FormField
+    */
+	public function __construct($name, $rules = null, $default = null, $value = null) 
 	{
 		
 		parent::__construct($name);
@@ -67,6 +68,7 @@ abstract class FormField extends FormFieldBase implements IInputField {
 		}
 		
 		$this->default = $default;
+        $this->value = $value;
 	}
 
 	/**

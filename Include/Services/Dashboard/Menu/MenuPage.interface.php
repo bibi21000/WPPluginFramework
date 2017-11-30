@@ -14,6 +14,6 @@ interface IMenuPage {
 	/**
 	* 
 	*/
-	public function add(& $callback);
+	public function & add(& $callback);
 	
 }

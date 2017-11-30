@@ -49,14 +49,14 @@ abstract class ModelBase extends MVC\MVCComponenetsLayer {
 	* @var mixed
 	*/
 	private $stateAdapter;
-	
-	/**
-	* put your comment there...
-	* 
-	* @param MVC\IMVCComponentsLayer $serviceManager
-	* @return {ModelBase|MVC\IMVCComponentsLayer}
-	*/
-	public function __construct(MVC\IMVCServiceManager & $serviceManager) {
+
+    /**
+    * put your comment there...
+    * 
+    * @param MVC\IMVCServiceManager $serviceManager
+    * @return {ModelBase|MVC\IMVCServiceManager}
+    */
+	public function __construct(MVC\IMVCServiceManager $serviceManager) {
 		# MVC layer
 		parent::__construct($serviceManager);
 		# Model params

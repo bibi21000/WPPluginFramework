@@ -26,6 +26,6 @@ interface IInputField {
 	/**
 	* 
 	*/
-	public function setRule(IFieldRule $rule);
+	public function & setRule(IFieldRule $rule);
 
 }

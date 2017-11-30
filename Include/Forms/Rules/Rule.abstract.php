@@ -64,6 +64,13 @@ abstract class FieldRule implements IFieldRule {
 		return $this->field;
 	}
 
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $message
+    */
+    protected abstract function getMessageString( $message );
+    
 	/**
 	* put your comment there...
 	* 

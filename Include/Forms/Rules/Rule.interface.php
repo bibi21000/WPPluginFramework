@@ -16,7 +16,7 @@ interface IFieldRule {
 	/**
 	* 
 	*/
-	public function bind(FormField & $field);
+	public function & bind(FormField & $field);
 	
 	/**
 	* 

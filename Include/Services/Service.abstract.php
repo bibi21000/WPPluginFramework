@@ -84,7 +84,7 @@ abstract class ServiceBase implements IService {
 	* @param ProxyBase $proxy
 	* @return {ProxyBase|ServiceBase}
 	*/
-	public function & createServiceFront(IProxy & $proxy) {
+	public function & createServiceFront(IProxy $proxy) {
 		# Initialize
 		$serviceFrontFactory =& $this->serviceFrontFactory;
 		# Get service object

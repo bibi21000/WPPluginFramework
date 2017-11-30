@@ -89,8 +89,8 @@ abstract class TemplateView extends Base {
 	protected function render() {
 		# Pre redner 
 		$this->preRender();
-    # Get template file path
-    $layoutPath = $this->getTemplateFilePath();
+        # Get template file path
+        $layoutPath = $this->getTemplateFilePath();
 		# Open Output buffer
 		ob_start();
 		# Get file content

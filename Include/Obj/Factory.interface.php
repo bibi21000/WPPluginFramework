@@ -13,11 +13,11 @@ interface IFactory {
 	/**
 	* 
 	*/
-	public function create($class);
+	public function & create($class);
 
 	/**
 	* 
 	*/
-	public function get($class);
+	public function & get($class);
 
 }
