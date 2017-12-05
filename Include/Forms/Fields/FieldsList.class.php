@@ -76,6 +76,18 @@ abstract class FormFieldsList extends FormFieldBase {
 		return $value;
 	}
 
+    /**
+    * put your comment there...
+    * 
+    */
+    public function hasFields()
+    {
+        
+        $hasFields = !empty($this->fields);
+        
+        return $hasFields;
+    }
+    
 	/**
 	* put your comment there...
 	* 
