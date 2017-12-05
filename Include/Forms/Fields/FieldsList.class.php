@@ -18,7 +18,7 @@ abstract class FormFieldsList extends FormFieldBase {
 	* 
 	* @var mixed
 	*/
-	protected $fields;
+	protected $fields = array();
 
 	/**
 	* put your comment there...
